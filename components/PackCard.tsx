@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 interface PackCardProps {
   title: string;
   subtitle: string;
@@ -15,11 +17,11 @@ export default function PackCard({
   duration,
   features,
 }: PackCardProps) {
-  const handleActivate = async () => {};
+  // Construct URL with query parameters
+  const activateUrl = `/activate?title=${encodeURIComponent(title)}&price=${encodeURIComponent(price)}`;
 
   return (
     <div className="pack-card">
-      {/* Card Header */}
       <div className="pack-header">
         <h3 className="pack-title">{title}</h3>
         <p className="pack-subtitle">{subtitle}</p>
@@ -27,7 +29,6 @@ export default function PackCard({
         <div className="pack-duration">{duration}</div>
       </div>
 
-      {/* Card Body */}
       <div className="pack-body">
         <ul className="pack-features">
           {features.map((feature, index) => (
@@ -38,15 +39,10 @@ export default function PackCard({
         </ul>
       </div>
 
-      {/* Card Footer */}
       <div className="pack-footer">
-        <button
-          className="pack-button"
-          onClick={handleActivate}
-          disabled={false}
-        >
+        <Link href={activateUrl} className="pack-button">
           Activate
-        </button>
+        </Link>
       </div>
     </div>
   );
