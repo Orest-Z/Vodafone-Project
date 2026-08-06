@@ -426,3 +426,101 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
+/* --- Activation Page & Form Styles --- */
+
+.activate-container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.activate-container h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.tourist-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* Adds space between every form group */
+  margin-top: 20px;
+}
+
+.tourist-form h3 {
+  margin-bottom: 10px;
+  color: #333;
+  font-size: 1.2rem;
+  border-bottom: 2px solid #e60000; /* Vodafone red accent */
+  padding-bottom: 5px;
+  display: inline-block;
+}
+
+.tourist-form label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 600;
+  color: #444;
+  font-size: 0.9rem;
+}
+
+/* Style all inputs and the select dropdown */
+.tourist-form input,
+.tourist-form select {
+  margin-top: 5px;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.2s ease;
+}
+
+.tourist-form input:focus,
+.tourist-form select:focus {
+  outline: none;
+  border-color: #e60000;
+  box-shadow: 0 0 0 2px rgba(230, 0, 0, 0.1);
+}
+
+/* Button Layout */
+.form-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.form-actions button {
+  flex: 1; /* Makes buttons equal width */
+  padding: 14px;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.2s ease;
+}
+
+/* Secondary / Back Button */
+.form-actions button[type="button"] {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.form-actions button[type="button"]:hover {
+  background-color: #e0e0e0;
+}
+
+/* Primary / Submit Button */
+.form-actions button[type="submit"] {
+  background-color: #e60000; /* Vodafone Red */
+  color: white;
+}
+
+
+.form-actions button[type="submit"]:hover {
+  background-color: #cc0000;
+}
