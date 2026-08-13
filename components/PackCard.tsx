@@ -39,10 +39,10 @@ export default function PackCard({
         </ul>
       </div>
 
-      <div className="pack-footer">
-        <Link href={activateUrl} className="pack-button">
+      <div className="pack-footer" style={{ padding: "20px", background: "#f8f9fa", borderTop: "1px solid #eee" }}>
+        <button className="pack-button">
           Activate
-        </Link>
+        </button>
       </div>
     </div>
   );
