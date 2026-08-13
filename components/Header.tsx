@@ -7,13 +7,13 @@ import Image from "next/image";
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const menuItems = [
-    { name: "Mobile", href: "/" },
-    { name: "Fits & TV", href: "/fits-tv" },
-    { name: "eShop", href: "/eshop" },
-    { name: "Tourist Pack", href: "/tourist-pack" },
-    { name: "Support", href: "/support" },
-  ];
+const menuItems = [
+  { name: "Mobile", href: "https://www.vodafone.al/mobile/" },
+  { name: "Fiks & TV", href: "https://www.vodafone.al/fiks-tv/" },
+  { name: "eShop", href: "https://eshop.vodafone.al/" },
+  { name: "Tourist Pack", href: "/" }, 
+  { name: "Support", href: "https://www.vodafone.al/suport/" },
+];
 
   return (
     <header className="header">
@@ -30,9 +30,15 @@ export default function Header() {
         {/* Desktop Navigation */}
         <nav className="nav">
           {menuItems.map((item) => (
-            <ul key={item.name} className="nav-link">
+              <a 
+              key={item.name} 
+              href={item.href} 
+              className="nav-link"
+              target={item.href.startsWith("http") ? "_blank" : "_self"}
+              rel={item.href.startsWith("http") ? "noopener noreferrer" : ""}
+            >
               {item.name}
-            </ul>
+            </a>
           ))}
         </nav>
 
@@ -40,6 +46,7 @@ export default function Header() {
         <div className="header-buttons">
           <button className="header-button">🔍</button>
           <button className="header-button">🛒</button>
+          
           <button
             className="mobile-menu-button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
