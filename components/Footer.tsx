@@ -1,30 +1,47 @@
+import { Facebook, Instagram, Twitter, Youtube } from "lucide-react";
 const footerLinks = {
   company: [
-    { href: "/about", label: "About Us" },
-    { href: "/careers", label: "Careers" },
-    { href: "/news", label: "News" },
+    { href: "https://www.vodafone.al/rreth-nesh/rreth-vodafone-albania", label: "About Us" },
+    { href: "https://www.vodafone.al/karriera", label: "Careers" },
+    { href: "https://www.vodafone.al/per-median/lajmerime", label: "News" },
   ],
   services: [
-    { href: "/packages", label: "Packages" },
-    { href: "/roaming", label: "Roaming" },
-    { href: "/internet", label: "Internet" },
+    { href: "https://www.vodafone.al/paketa-dhe-oferta/paketat", label: "Packages" },
+    { href: "https://home.vodafone.al/roaming", label: "Roaming" },
+    { href: "https://www.vodafone.al/suport/internet", label: "Internet" },
   ],
   support: [
-    { href: "/support", label: "Help Center" },
-    { href: "/contact", label: "Contact" },
-    { href: "/faq", label: "FAQ" },
+    { href: "https://www.vodafone.al/suport", label: "Help Center" },
+    { href: "https://www.vodafone.al/na-kontaktoni", label: "Contact" },
+    { href: "https://www.vodafone.al/suport", label: "FAQ" },
   ],
   contact: [
-    { href: "/whatsapp", label: "WhatsApp" },
-    { href: "/email", label: "Email" },
-    { href: "/phone", label: "Phone" },
+    { href: "https://api.whatsapp.com/send?phone=355699000140", label: "WhatsApp" },
+    { href: "https://www.vodafone.al/na-kontaktoni", label: "Email" },
+    { href: "https://www.vodafone.al/na-kontaktoni", label: "Phone" },
   ],
 };
 const socialLinks = [
-  { href: "#", label: "Facebook", icon: "📘" },
-  { href: "#", label: "Instagram", icon: "📷" },
-  { href: "#", label: "Twitter", icon: "🐦" },
-  { href: "#", label: "YouTube", icon: "📺" },
+  { 
+    href: "https://www.facebook.com/vodafonealbania", 
+    label: "Facebook", 
+    icon: <Facebook size={20} /> 
+  },
+  { 
+    href: "https://www.instagram.com/vodafonealbania", 
+    label: "Instagram", 
+    icon: <Instagram size={20} /> 
+  },
+  { 
+    href: "https://twitter.com/vodafonealbania", 
+    label: "Twitter", 
+    icon: <Twitter size={20} /> 
+  },
+  { 
+    href: "https://www.youtube.com/user/VodafoneAlbania", 
+    label: "YouTube", 
+    icon: <Youtube size={20} /> 
+  },
 ];
 const FooterSection = ({
   title,
@@ -73,9 +90,15 @@ export default function Footer() {
           </div>
           <div className="footer-social">
             {socialLinks.map((link, index) => (
-              <li key={index} aria-label={link.label}>
+              <a 
+                key={index} 
+                href={link.href} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                aria-label={link.label}
+              >
                 {link.icon}
-              </li>
+              </a>
             ))}
           </div>
         </div>
