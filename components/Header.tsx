@@ -3,6 +3,7 @@ import img from "./../public/assets/logo.webp";
 
 import { useState } from "react";
 import Image from "next/image";
+import ThemeToggle from "@/components/ThemeToggle";
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -14,6 +15,7 @@ const menuItems = [
   { name: "Tourist Pack", href: "/" }, 
   { name: "Support", href: "https://www.vodafone.al/suport/" },
 ];
+
 
   return (
     <header className="header">
@@ -40,13 +42,14 @@ const menuItems = [
               {item.name}
             </a>
           ))}
+          
         </nav>
 
         {/* Header Buttons */}
         <div className="header-buttons">
           <button className="header-button">🔍</button>
           <button className="header-button">🛒</button>
-          
+          <ThemeToggle />
           <button
             className="mobile-menu-button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -69,6 +72,7 @@ const menuItems = [
           </a>
         ))}
       </nav>
+      
     </header>
   );
 }
