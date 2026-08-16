@@ -1,48 +1,54 @@
 "use client";
 
-import Link from "next/link";
+import React from "react";
+
+interface PackFeature {
+  text: string;
+  icon: React.ReactNode;
+}
 
 interface PackCardProps {
   title: string;
   subtitle: string;
   price: string;
   duration: string;
-  features: string[];
+  features: PackFeature[];
+  imageUrl: string; // Add this to pass the specific image
 }
 
 export default function PackCard({
-  title,
-  subtitle,
-  price,
-  duration,
-  features,
+  title, subtitle, price, duration, features, imageUrl
 }: PackCardProps) {
-  // Construct URL with query parameters
-  const activateUrl = `/activate?title=${encodeURIComponent(title)}&price=${encodeURIComponent(price)}`;
+  const activateUrl = `/activate?title=${encodeURIComponent(title)}&price=${encodeURIComponent(price)}&duration=${encodeURIComponent(duration)}`;
 
   return (
     <div className="pack-card">
-      <div className="pack-header">
+      {/* TOP PORTION: Image Background + Title */}
+      <div 
+        className="pack-media-header" 
+      >
         <h3 className="pack-title">{title}</h3>
-        <p className="pack-subtitle">{subtitle}</p>
-        <div className="pack-price">{price}</div>
-        <div className="pack-duration">{duration}</div>
       </div>
 
-      <div className="pack-body">
+      {/* BOTTOM PORTION: Solid Background + Details */}
+      <div className="pack-details-body">
+        <div className="pack-price">{price}</div>
+        <div className="pack-duration">{duration}</div>
+        
         <ul className="pack-features">
           {features.map((feature, index) => (
             <li key={index} className="pack-feature">
-              {feature}
+              <span className="feature-icon">{feature.icon}</span>
+              <span className="feature-text">{feature.text}</span>
             </li>
           ))}
         </ul>
-      </div>
 
-      <div className="pack-footer" style={{ padding: "20px", background: "#f8f9fa", borderTop: "1px solid #eee" }}>
-        <button className="pack-button">
-          Activate
-        </button>
+        <div className="pack-footer">
+          <button className="pack-button" onClick={() => window.location.href = activateUrl}>
+            Activate
+          </button>
+        </div>
       </div>
     </div>
   );
