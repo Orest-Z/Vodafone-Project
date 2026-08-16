@@ -21,13 +21,15 @@ const menuItems = [
     <header className="header">
       <div className="header-content">
         {/* Logo */}
-        <Image
-          src={img}
-          objectFit="contain"
-          alt="vodafone logo"
-          width={50}
-          height={50}
-        />
+        <a href="/" className="logo-link">
+          <Image
+            src={img}
+            objectFit="contain"
+            alt="vodafone logo"
+            width={50}
+            height={50}
+          />
+        </a>
 
         {/* Desktop Navigation */}
         <nav className="nav">
