@@ -9,7 +9,8 @@ import {
   MapPin, Sun, Mountain, Building2, Calendar, 
   Smartphone, Globe, Gift, Trophy, Disc, HelpCircle, 
   CheckCircle2, RotateCcw, Sparkles, 
-  Wifi, PhoneCall, Globe2 
+  Wifi, PhoneCall, Globe2 ,
+    ShoppingCart, MousePointerClick, Zap
 } from "lucide-react";
 
 const activationSteps = [
@@ -17,21 +18,25 @@ const activationSteps = [
     number: "1",
     title: "Choose Pack",
     text: "Select the tourist pack that fits your needs",
+    icon: <ShoppingCart size={28} color="#e60000" />
   },
   {
     number: "2",
     title: "Click Activate",
     text: "Press the activate button on your chosen pack",
+    icon: <MousePointerClick size={28} color="#e60000" />
   },
   {
     number: "3",
     title: "Start Using",
     text: "Your pack is ready to use immediately",
+    icon: <Zap size={28} color="#e60000" />
   },
   {
     number: "4",
     title: "Claim Reward",
-    text: "Scroll down to play a mini-game for guaranteed extra data",
+    text: "Scroll down to play a mini-game for extra data",
+    icon: <Gift size={28} color="#e60000" />
   }
 ];
 
@@ -119,6 +124,7 @@ export default function HomePage() {
 
       {/* Hero Section */}
       <section className="hero-quiz-container">
+        <div className="hero-map-column">
         <div className="hero-map-wrapper albania-mask-container">
   <video 
     autoPlay 
@@ -130,10 +136,13 @@ export default function HomePage() {
     <source src="/assets/mapVideo.mp4" type="video/mp4" />
   </video>
 </div>
+        <p className="hero-map-caption">A 30-second tour of Albania's best views</p>
+        </div>
 
         <div className="hero-quiz-content">
           {quizStep === 1 && (
             <div>
+              <span className="hero-eyebrow">Mirë se vini · Welcome to Albania</span>
               <h1 className="hero-title" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", lineHeight: "1" }}>
                 Where are you headed? <MapPin color="#e60000" size={32} style={{ marginTop: "-20px" }} />
               </h1>
@@ -150,6 +159,11 @@ export default function HomePage() {
                 <button onClick={() => handleAnswer("destination", "City")} className="pack-button" style={{ flex: "1 1 140px", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}>
                   <Building2 size={18} /> City Explorer
                 </button>
+              </div>
+              <div className="hero-trust-strip">
+                <span><Wifi size={16} color="#e60000" /> 4G/5G nationwide</span>
+                <span><CheckCircle2 size={16} color="#e60000" /> Instant activation</span>
+                <span><PhoneCall size={16} color="#e60000" /> 24/7 support</span>
               </div>
             </div>
           )}
@@ -198,7 +212,7 @@ export default function HomePage() {
                 <CheckCircle2 size={24} /> Perfect Match Found!
               </div>
               <h1 className="hero-title" style={{ marginBottom: "20px" }}>{recommendedPack.title}</h1>
-              <div style={{ border: "2px solid #e60000", padding: "25px", borderRadius: "12px", maxWidth: "400px", margin: "0 auto" }}>
+              <div className="quiz-result-card">
                 <p style={{ fontSize: "32px", fontWeight: "bold", color: "#e60000", margin: "10px 0" }}>{recommendedPack.price}</p>
                       <ul style={{ listStyle: "none", padding: 0, margin: "20px 0" }}>
                         {recommendedPack.features.map((feature, i) => (
@@ -211,7 +225,7 @@ export default function HomePage() {
                 <button
                   className="pack-button"
                   onClick={() =>
-                    (window.location.href = `/activate?title=${encodeURIComponent(recommendedPack.title)}&price=${encodeURIComponent(recommendedPack.price)}`)
+                    (window.location.href = `/activate?title=${encodeURIComponent(recommendedPack.title)}&price=${encodeURIComponent(recommendedPack.price)}&duration=${encodeURIComponent(recommendedPack.duration)}`)
                   }
                 >
                   Activate Pack
@@ -239,7 +253,7 @@ export default function HomePage() {
             <PackCard
               key={index}
               title={pack.title}
-              subtitle={`Valid for ${pack.duration}`}
+              subtitle="Perfect for tourists"
               price={pack.price}
               duration={pack.duration}
               features={pack.features}
@@ -250,46 +264,56 @@ export default function HomePage() {
 
       {/* How to Activate Section */}
       <h2 className="section-title">How to Activate</h2>
-      <div className="steps">
-        {activationSteps.map((step, index) => (
-          <ActivationStep
-            key={index}
-            number={step.number}
-            title={step.title}
-            text={step.text}
-          />
-        ))}
-      </div>
-
-      {/* Mini Game Section */}
-      <section style={{ padding: "40px 20px", textAlign: "center", borderRadius: "12px", margin: "40px 0" }}>
-        <h2 className="section-title" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "10px" }}>
-          Play & Win Rewards! <Gift color="#e60000" size={28} />
-        </h2>
-        {!activeGame ? (
-          <div style={{ display: "flex", gap: "20px", justifyContent: "center", flexWrap: "wrap" }}>
-            <button onClick={() => setActiveGame("penalty")} style={{ padding: "20px", borderRadius: "8px", border: "2px solid #e60000", cursor: "pointer", flex: "1", minWidth: "200px" }}>
-              <Trophy color="#e60000" size={22} />
-              <h3 style={{ fontSize: "20px", margin: "10px 0 0" }}>Beat TOBI</h3>
-            </button>
-            <button onClick={() => setActiveGame("spin")} style={{ padding: "20px", borderRadius: "8px", border: "2px solid #e60000", cursor: "pointer", flex: "1", minWidth: "200px" }}>
-              <Disc color="#e60000" size={22} />
-              <h3 style={{ fontSize: "20px", margin: "10px 0 0" }}>Spin & Win</h3>
-            </button>
-            <button onClick={() => setActiveGame("trivia")} style={{ padding: "20px", borderRadius: "8px", border: "2px solid #e60000", cursor: "pointer", flex: "1", minWidth: "200px" }}>
-              <HelpCircle color="#e60000" size={22} />
-              <h3 style={{ fontSize: "20px", margin: "10px 0 0" }}>Albania Quiz</h3>
-            </button>
-          </div>
-        ) : (
-          <div style={{ padding: "40px", borderRadius: "8px", border: "2px dashed #ccc" }}>
-            <h3>Loading the {activeGame} challenge...</h3>
-            <button onClick={() => setActiveGame(null)} style={{ marginTop: "20px", padding: "10px 20px", border: "1px solid #ccc", borderRadius: "5px", cursor: "pointer" }}>
-              Back to Menu
-            </button>
-          </div>
-        )}
+      
+      <section className="activation-journey-container">
+        <div className="steps progress-line-enabled">
+          {activationSteps.map((step, index) => (
+            <ActivationStep
+              key={index}
+              number={step.number}
+              title={step.title}
+              text={step.text}
+              icon={step.icon}
+            />
+          ))}
+        </div>
       </section>
-    </>
+<section className="digital-pass-section fade-in-up">
+        <div className="digital-pass-header">
+          <h2 className="digital-pass-title">The "Zero-App" Digital Tourist Pass</h2>
+          <p className="digital-pass-subtitle">
+            One pass. Hundreds of benefits. Added instantly to your wallet.
+          </p>
+        </div>
+        
+        <div className="digital-pass-mockups">
+          <div className="mockup-container">
+            <Image 
+              src="/assets/iphoneMockup.webp" 
+              alt="Vodafone Tourist Pass on Apple Wallet" 
+              width={340} 
+              height={680} 
+              className="phone-mockup"
+              priority
+            />
+          </div>
+          
+          <div className="nfc-ripple">
+            <Wifi size={48} color="#e60000" />
+          </div>
+
+          <div className="mockup-container">
+            <Image 
+              src="/assets/androidMockup.webp" 
+              alt="Vodafone Tourist Pass on Google Wallet" 
+              width={340} 
+              height={680} 
+              className="phone-mockup"
+              priority
+            />
+          </div>
+        </div>
+      </section>
+      </>
   );
 }
