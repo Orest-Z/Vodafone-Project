@@ -12,6 +12,7 @@ import {
   Wifi, PhoneCall, Globe2 ,
     ShoppingCart, MousePointerClick, Zap
 } from "lucide-react";
+import ExclusiveOffers from "@/components/ExclusiveOffers";
 
 const activationSteps = [
   {
@@ -314,6 +315,8 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      <ExclusiveOffers />
       </>
   );
 }
