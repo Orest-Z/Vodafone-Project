@@ -1810,41 +1810,7 @@ body {
   padding: 0 20px; 
 }
 
-/* =========================================
-   THE DASHED PATH & AIRPLANE
-   ========================================= */
-.journey-path-desktop {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-  pointer-events: none;
-}
 
-.journey-airplane {
-  position: absolute;
-  top: 46%;
-  left: 84%;
-  width: 46px;
-  height: auto;
-  z-index: 6; /* above the map (0), below the cards (10) since it now sits over the map, not over a card */
-  pointer-events: none;
-  transform: rotate(100deg); /* sprite's nose points up by default; 100deg banks it right + slightly down, into the map */
-  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));
-}
-
-.journey-map {
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 160px;
-  z-index: 0;
-  pointer-events: none;
-  opacity: 0.15;
-}
 
 /* =========================================
    ELEVATED CARDS (Targets your .steps container)
@@ -2090,5 +2056,294 @@ position: relative;
   
   .digital-pass-subtitle {
     font-size: 16px;
+  }
+}/* =========================================
+   EXCLUSIVE OFFERS SECTION
+   ========================================= */
+
+.offers-section {
+  background: var(--bg-main);
+  border: 1px solid var(--card-border);
+  padding: 80px 20px;
+  border-radius: 24px;
+  margin: 60px 0;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.offers-title {
+  text-align: center;
+  color: var(--text-main);
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  margin: 0 auto 60px;
+}
+
+/* Radial "network" container — desktop default */
+.offers-network {
+  position: relative;
+  width: 100%;
+  max-width: 1000px;
+  height: 640px;
+  margin: 0 auto;
+}
+
+/* ---------- Connecting lines ---------- */
+.offers-connector-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0; /* behind every card */
+}
+
+.offers-connector-line {
+  stroke: var(--primary);
+  stroke-width: 0.3;
+  stroke-dasharray: 1.4 1.6;
+  opacity: 1;
+}
+
+/* ---------- Central Vodafone Tourist Pass card ---------- */
+.pass-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  width: 260px;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+  border-radius: 18px;
+  padding: 22px 22px 16px;
+  box-shadow: 0 12px 30px rgba(230, 0, 0, 0.25);
+  color: #ffffff;
+}
+
+.pass-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 22px;
+}
+
+.pass-card-brand {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+.pass-card-badge {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  background: rgba(255, 255, 255, 0.18);
+  padding: 4px 8px;
+  border-radius: 20px;
+}
+
+.pass-card-label {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0 0 20px;
+}
+
+/* Ticket-style perforation with cut-out notches on either side */
+.pass-card-perforation {
+  position: relative;
+  height: 1px;
+  background-image: repeating-linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.55) 0,
+    rgba(255, 255, 255, 0.55) 6px,
+    transparent 6px,
+    transparent 12px
+  );
+  margin: 0 -22px 16px;
+}
+
+.pass-card-perforation::before,
+.pass-card-perforation::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 20px;
+  height: 20px;
+  background: var(--bg-main);
+  border-radius: 50%;
+  transform: translateY(-50%);
+}
+
+.pass-card-perforation::before {
+  left: -10px;
+}
+
+.pass-card-perforation::after {
+  right: -10px;
+}
+
+.pass-card-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.pass-card-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.pass-card-count {
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.pass-card-count-label {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.8);
+  margin-top: 4px;
+}
+
+.pass-card-qr {
+  width: 56px;
+  height: 56px;
+  background: #ffffff;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ---------- Sponsor boxes ---------- */
+.sponsor-box {
+  position: absolute;
+  z-index: 2;
+  transform: translate(-50%, -50%);
+  width: 210px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  padding: 12px 14px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease, background-color 0.3s ease;
+}
+
+.sponsor-box:hover {
+  border-color: var(--primary);
+  box-shadow: 0 0 15px rgba(230, 0, 0, 0.25);
+  transform: translate(-50%, -50%) scale(1.04);
+}
+
+.sponsor-logo {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--card-bg-alt);
+  border: 1px solid var(--card-border);
+}
+
+.sponsor-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.sponsor-copy {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.sponsor-name {
+  color: var(--text-main);
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sponsor-discount {
+  color: var(--primary);
+  font-size: 13px;
+  font-weight: 700;
+  margin-top: 2px;
+}
+
+/* Hidden on desktop — only used for the mobile vertical connector */
+.mobile-connector {
+  display: none;
+}
+
+/* =========================================
+   RESPONSIVE — collapse the network into a
+   vertical stack with dashed connecting lines
+   ========================================= */
+@media (max-width: 860px) {
+  .offers-network {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    max-width: 360px;
+  }
+
+  .offers-connector-svg {
+    display: none;
+  }
+
+  .pass-card {
+    position: static;
+    transform: none;
+    width: 100%;
+    max-width: 280px;
+    margin-bottom: 4px;
+  }
+
+  /* sponsor-box keeps its row layout (circle left, text right) —
+     only the outer network switches from radial to a column stack */
+  .sponsor-box {
+    position: static;
+    transform: none;
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .sponsor-box:hover {
+    transform: none;
+  }
+
+  /* dashed vertical line above each box, connecting it to the item before it */
+  .mobile-connector {
+    display: block;
+    width: 2px;
+    height: 28px;
+    opacity: 0.5;
+    background-image: repeating-linear-gradient(
+      to bottom,
+      var(--primary) 0,
+      var(--primary) 5px,
+      transparent 5px,
+      transparent 10px
+    );
+    order: -1;
+  }
+}
+
+@media (max-width: 480px) {
+  .offers-title {
+    font-size: 24px;
+    margin-bottom: 40px;
+  }
+
+  .offers-section {
+    padding: 56px 16px;
   }
 }
