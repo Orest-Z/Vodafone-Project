@@ -257,6 +257,7 @@ export default function HomePage() {
               subtitle="Perfect for tourists"
               price={pack.price}
               duration={pack.duration}
+              imageUrl={`/assets/pack${index + 1}.webp`}
               features={pack.features}
             />
           ))}
