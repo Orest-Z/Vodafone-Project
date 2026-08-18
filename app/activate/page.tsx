@@ -11,11 +11,11 @@ import {
   Compass,
   MapPin,
   Zap,
-  Gift,
   Loader2,
 } from "lucide-react";
 import TouristDetailsForm from "@/components/TouristDetailsForm";
 import { TouristDetails } from "@/types/tourist";
+import WalletSyncStatus from "@/components/game/WalletSyncStatus";
 
 const QUEST_STEPS = ["Choose Pack", "Your Details", "Processing", "Reward"];
 
@@ -131,20 +131,21 @@ function PackSummary({
   );
 }
 
-/* Post-submit confirmation. The receipt side is fully live; the reward side
-   is intentionally a placeholder (per spec, the game itself ships later) —
-   it just needs to render correctly and communicate that something real is
-   coming, rather than leaving the screen looking unfinished. */
+/* Post-submit confirmation. The receipt side is fully live. The reward side
+   now hands off to the real WalletSyncStatus component — on completion it
+   routes straight into /game-hub, where the actual mini-games live. */
 function SuccessPanel({
   packTitle,
   packPrice,
   packDuration,
   orderRef,
+  onWalletSynced,
 }: {
   packTitle: string;
   packPrice: string;
   packDuration: string;
   orderRef: string;
+  onWalletSynced: () => void;
 }) {
   return (
     <div className="form-card fade-in-up" style={{ maxWidth: 880, margin: "0 auto" }} role="status" aria-live="polite">
@@ -179,14 +180,8 @@ function SuccessPanel({
           </div>
         </div>
 
-        <div className="spin-panel">
-          <span className="eyebrow">Bonus Reward</span>
-          <div className="spin-wheel-wrap">
-            <Gift size={30} />
-          </div>
-          <p className="intro-subtext" style={{ maxWidth: "none", margin: "16px auto 0" }}>
-            Your reward game is warming up — check back here in a moment!
-          </p>
+        <div className="spin-panel" style={{ padding: 0, background: "none", boxShadow: "none" }}>
+          <WalletSyncStatus packTitle={packTitle} onComplete={onWalletSynced} />
         </div>
       </div>
     </div>
@@ -228,6 +223,7 @@ function ActivateContent() {
             packPrice={packPrice}
             packDuration={packDuration}
             orderRef={orderRef}
+            onWalletSynced={() => router.push("/game-hub")}
           />
         </div>
       ) : (
