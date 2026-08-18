@@ -337,7 +337,6 @@ body {
 .albania-video {
   width: 100%;
   height: 100%;
-  object-fit: cover; 
   /* Added object-position to ensure the video stays dead center */
   object-position: center center; 
   display: block;
@@ -349,7 +348,6 @@ body {
   height: auto;
   object-fit: contain;
   filter: drop-shadow(0 12px 20px rgba(230, 0, 0, 0.12));
-  transition: transform 0.3s ease;
 }
 
 .hero-map-img:hover {
@@ -2346,4 +2344,756 @@ position: relative;
   .offers-section {
     padding: 56px 16px;
   }
+}
+
+/* =========================================
+   GAME HUB & ACTIVATION REWARD FLOW
+   ========================================= */
+
+.game-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 0;
+  overflow: hidden;
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.game-card-header {
+  background: var(--card-bg-alt);
+  border-bottom: 3px solid var(--primary);
+  padding: 20px 24px;
+}
+
+.game-eyebrow {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.game-title {
+  margin-top: 4px;
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--text-main);
+}
+
+.game-card-body {
+  padding: 28px 24px;
+}
+
+/* ---------- Buttons ---------- */
+.game-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 14px 24px;
+  border: none;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.2s ease, opacity 0.2s ease, transform 0.15s ease;
+}
+
+.game-btn:active {
+  transform: scale(0.98);
+}
+
+.game-btn--primary {
+  background: var(--primary);
+  color: #fff;
+}
+.game-btn--primary:hover {
+  background: var(--primary-hover);
+}
+
+.game-btn--dark {
+  background: var(--text-main);
+  color: var(--card-bg);
+}
+.game-btn--dark:hover {
+  opacity: 0.85;
+}
+
+.game-btn--ghost {
+  background: none;
+  border: none;
+  color: var(--primary);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-decoration: underline;
+  padding: 6px;
+}
+
+.game-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* =========================================
+   WALLET SYNC STATUS
+   ========================================= */
+.wallet-step-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.wallet-step {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.wallet-step-marker {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid var(--card-border);
+  background: var(--card-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.25s ease, border-color 0.25s ease;
+}
+
+.wallet-step-marker--complete {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
+.wallet-step-marker--active {
+  border-color: var(--primary);
+}
+
+.wallet-step-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--primary);
+  animation: wallet-pulse 0.9s ease-in-out infinite;
+}
+
+@keyframes wallet-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.25; }
+}
+
+.wallet-step-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.wallet-step-label--active {
+  color: var(--text-main);
+}
+
+.wallet-done {
+  text-align: center;
+}
+
+.wallet-done-icon {
+  margin: 0 auto;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wallet-done-title {
+  margin-top: 16px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.wallet-done-sub {
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* =========================================
+   GAME HUB DASHBOARD
+   ========================================= */
+.game-hub-wrap {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.game-hub-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  border-bottom: 2px solid var(--text-main);
+  padding-bottom: 16px;
+}
+
+.game-hub-title {
+  margin-top: 4px;
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--text-main);
+}
+
+.game-hub-credits {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.game-hub-credits-label {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.game-hub-credits-value {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+.game-hub-credits-mobile {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--card-bg-alt);
+  padding: 10px 16px;
+  margin-top: 16px;
+  border-radius: 8px;
+}
+
+.game-hub-intro {
+  margin-top: 16px;
+  max-width: 520px;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.game-hub-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.game-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  padding: 20px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.game-tile:hover:not(:disabled) {
+  border-color: var(--primary);
+  transform: translateY(-3px);
+}
+
+.game-tile:disabled {
+  cursor: not-allowed;
+  background: var(--card-bg-alt);
+}
+
+.game-tile-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 4px;
+  background: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.game-tile-icon--locked {
+  background: var(--card-border);
+}
+
+.game-tile-title {
+  margin-top: 16px;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: var(--text-main);
+}
+
+.game-tile-tagline {
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.game-tile-cta {
+  margin-top: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--primary);
+}
+
+.game-tile-cta--locked,
+.game-tile-played {
+  color: var(--text-muted);
+}
+
+.game-hub-empty-note {
+  margin-top: 24px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+@media (max-width: 720px) {
+  .game-hub-grid {
+    grid-template-columns: 1fr;
+  }
+  .game-hub-credits {
+    display: none;
+  }
+  .game-hub-credits-mobile {
+    display: flex;
+  }
+}
+
+/* =========================================
+   TOBi KEEPER GAME
+   ========================================= */
+.tobi-pitch {
+  position: relative;
+  margin: 0 auto;
+  max-width: 300px;
+  height: 160px;
+  border: 2px solid var(--text-main);
+  background: var(--card-bg-alt);
+  overflow: hidden;
+}
+
+.tobi-goal-frame {
+  position: absolute;
+  left: 50%;
+  top: 12px;
+  width: 200px;
+  height: 64px;
+  margin-left: -100px;
+  border: 4px solid var(--text-main);
+}
+
+.tobi-keeper {
+  position: absolute;
+  left: 50%;
+  top: 12px;
+  width: 44px;
+  height: 64px;
+  margin-left: -22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tobi-keeper-bot {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tobi-ball {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  width: 18px;
+  height: 18px;
+  margin-left: -9px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid var(--text-main);
+}
+
+.tobi-speech {
+  margin-top: 16px;
+  border-left: 2px solid var(--primary);
+  padding-left: 12px;
+}
+
+.tobi-speech p {
+  font-size: 12px;
+  font-style: italic;
+  color: var(--text-muted);
+}
+
+.tobi-controls {
+  margin-top: 24px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.tobi-corner-btn {
+  padding: 12px 0;
+  border: 1px solid var(--card-border);
+  background: var(--card-bg);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-main);
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.tobi-corner-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.tobi-result {
+  margin-top: 24px;
+  text-align: center;
+}
+
+.tobi-result-title {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: var(--text-main);
+}
+
+.tobi-result-title--win {
+  color: var(--primary);
+}
+
+/* =========================================
+   SHQIPËRIA WHEEL
+   ========================================= */
+.wheel-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.wheel-pointer-wrap {
+  position: relative;
+}
+
+.wheel-pointer {
+  position: absolute;
+  left: 50%;
+  top: -6px;
+  transform: translateX(-50%);
+  z-index: 10;
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 14px solid var(--primary);
+}
+
+.wheel-result {
+  margin-top: 28px;
+  width: 100%;
+  text-align: center;
+}
+
+.wheel-result-title {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: var(--primary);
+}
+
+.wheel-result-sub {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* =========================================
+   CULTURE QUIZ
+   ========================================= */
+.quiz-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.quiz-timer-track {
+  margin-top: 8px;
+  height: 4px;
+  width: 100%;
+  background: var(--card-bg-alt);
+}
+
+.quiz-timer-bar {
+  height: 100%;
+  background: var(--primary);
+}
+
+.quiz-question {
+  margin-top: 24px;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: var(--text-main);
+}
+
+.quiz-options {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.quiz-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border: 1px solid var(--card-border);
+  background: var(--card-bg);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-main);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.quiz-option:hover:not(:disabled) {
+  border-color: var(--primary);
+}
+
+.quiz-option:disabled {
+  cursor: default;
+}
+
+.quiz-option--correct {
+  border-color: var(--primary);
+  background: rgba(230, 0, 0, 0.06);
+}
+
+.quiz-option--wrong-selected {
+  border-color: var(--card-border);
+  background: var(--card-bg-alt);
+}
+
+.quiz-result {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.quiz-result-score {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: var(--text-main);
+}
+
+.quiz-result-sub {
+  margin-top: 4px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* =========================================
+   REWARD PASS REVEAL (MODAL)
+   ========================================= */
+.game-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 20px;
+}
+
+.game-overlay-card {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  background: var(--card-bg);
+  border-radius: 0;
+}
+
+.game-overlay-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 5;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--text-main, #25282B);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.reward-lose {
+  padding: 40px 28px;
+  text-align: center;
+}
+
+.reward-lose-eyebrow {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.reward-lose-title {
+  margin-top: 8px;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: var(--text-main);
+}
+
+.reward-lose-sub {
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.reward-win-header {
+  background: var(--primary);
+  color: #fff;
+  padding: 28px 24px 32px;
+}
+
+.reward-win-eyebrow {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.reward-win-title {
+  margin-top: 8px;
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  line-height: 1.15;
+}
+
+.reward-win-sub {
+  margin-top: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.reward-perforation {
+  position: relative;
+  height: 0;
+  border-top: 2px dashed var(--card-border);
+}
+
+.reward-perforation::before,
+.reward-perforation::after {
+  content: "";
+  position: absolute;
+  top: -12px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--bg-main);
+}
+
+.reward-perforation::before { left: -12px; }
+.reward-perforation::after { right: -12px; }
+
+.reward-body {
+  padding: 24px;
+}
+
+.reward-body-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.reward-barcode-row {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.reward-barcode {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 40px;
+}
+
+.reward-barcode-bar {
+  background: var(--text-main);
+}
+
+.reward-code {
+  font-family: monospace;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.reward-note {
+  margin-top: 20px;
+  font-size: 12px;
+  color: var(--text-muted);
 }
