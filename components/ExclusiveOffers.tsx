@@ -9,13 +9,13 @@ interface Sponsor {
 }
 
 const sponsors: Sponsor[] = [
-  { name: "OPA", discount: "15% ULJE", logo: "/assets/sponsors/opa.png" },
-  { name: "HOBUS Albania", discount: "15% ULJE", logo: "/assets/sponsors/hobus.png" },
-  { name: "Mon Cheri", discount: "1+1 Coffee", logo: "/assets/sponsors/mon-cheri.png" },
-  { name: "Burger King", discount: "10% ULJE", logo: "/assets/sponsors/burger-king.png" },
-  { name: "Smart Taxi", discount: "20% ULJE", logo: "/assets/sponsors/smart-taxi.png" },
-  { name: "Rentout", discount: "10% OFF", logo: "/assets/sponsors/rentout.png" },
-  { name: "Glow Skin", discount: "10% OFF", logo: "/assets/sponsors/glow-skin.png" },
+  { name: "OPA", discount: "15% ULJE", logo: "https://kigosmhsxdyewcdleaov.supabase.co/storage/v1/object/public/vodafone-assets/sponsors/opa.webp" },
+  { name: "HOBUS Albania", discount: "15% ULJE", logo: "https://kigosmhsxdyewcdleaov.supabase.co/storage/v1/object/public/vodafone-assets/sponsors/hobus.webp" },
+  { name: "Mon Cheri", discount: "1+1 Coffee", logo: "https://kigosmhsxdyewcdleaov.supabase.co/storage/v1/object/public/vodafone-assets/sponsors/mon-cheri.webp" },
+  { name: "Burger King", discount: "10% ULJE", logo: "https://kigosmhsxdyewcdleaov.supabase.co/storage/v1/object/public/vodafone-assets/sponsors/burger-king.webp" },
+  { name: "Smart Taxi", discount: "20% ULJE", logo: "https://kigosmhsxdyewcdleaov.supabase.co/storage/v1/object/public/vodafone-assets/sponsors/smart-taxi.webp" },
+  { name: "Rentout", discount: "10% OFF", logo: "https://kigosmhsxdyewcdleaov.supabase.co/storage/v1/object/public/vodafone-assets/sponsors/rentout.webp" },
+  { name: "Glow Skin", discount: "10% OFF", logo: "https://kigosmhsxdyewcdleaov.supabase.co/storage/v1/object/public/vodafone-assets/sponsors/glow-skin.webp" },
 ];
 
 // Radial spread as a percentage of the container. Tweak these if boxes feel
