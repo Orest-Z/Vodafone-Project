@@ -1,5 +1,4 @@
 "use client";
-import img from "./../public/assets/logo.webp";
 
 import { useState } from "react";
 import Image from "next/image";
@@ -21,9 +20,9 @@ const menuItems = [
     <header className="header">
       <div className="header-content">
         {/* Logo */}
-        <a href="/" className="logo-link">
+        <a href="/" className="https://kigosmhsxdyewcdleaov.supabase.co/storage/v1/object/public/vodafone-assets/logo.webp">
           <Image
-            src={img}
+            src="https://kigosmhsxdyewcdleaov.supabase.co/storage/v1/object/public/vodafone-assets/logo.webp"
             objectFit="contain"
             alt="vodafone logo"
             width={50}
@@ -49,8 +48,6 @@ const menuItems = [
 
         {/* Header Buttons */}
         <div className="header-buttons">
-          <button className="header-button">🔍</button>
-          <button className="header-button">🛒</button>
           <ThemeToggle />
           <button
             className="mobile-menu-button"
