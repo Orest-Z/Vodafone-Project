@@ -632,22 +632,6 @@ body {
   box-shadow: 0 6px 15px rgba(200, 0, 0, 0.6) !important;
 }
 
-/* =========================================
-   PACK CARD BACKGROUND IMAGES (UPDATED OPACITY)
-   ========================================= */
-
-.pack-grid > *:nth-child(1)::before {
-  background-image: url('/assets/beach.webp'); 
-}
-
-.pack-grid > *:nth-child(2)::before {
-  background-image: url('/assets/mountain.webp'); 
-}
-
-.pack-grid > *:nth-child(3)::before {
-  background-image: url('/assets/city.webp'); 
-}
-
 
 .pack-card .pack-subtitle {
   color: var(--text-muted) !important;
