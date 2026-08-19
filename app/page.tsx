@@ -9,8 +9,8 @@ import {
   MapPin, Sun, Mountain, Building2, Calendar, 
   Smartphone, Globe, Gift, Trophy, Disc, HelpCircle, 
   CheckCircle2, RotateCcw, Sparkles, 
-  Wifi, PhoneCall, Globe2 ,
-    ShoppingCart, MousePointerClick, Zap
+  Wifi, PhoneCall, Globe2,
+  ShoppingCart, MousePointerClick, Zap
 } from "lucide-react";
 import ExclusiveOffers from "@/components/ExclusiveOffers";
 
@@ -48,6 +48,28 @@ export default function HomePage() {
     document.title = `Welcome to ${name}`;
   }, [name]);
 
+  // NEW: State to hold dynamic packs from Spring Boot
+  const [packs, setPacks] = useState<any[]>([]);
+  const [loadingPacks, setLoadingPacks] = useState(true);
+
+  // NEW: Fetch packs on component mount
+  useEffect(() => {
+    async function loadPacks() {
+      const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8080/api/v1";
+      try {
+        const res = await fetch(`${apiUrl}/packs`, { cache: "no-store" });
+        if (res.ok) {
+          setPacks(await res.json());
+        }
+      } catch (error) {
+        console.error("Failed to fetch packs", error);
+      } finally {
+        setLoadingPacks(false);
+      }
+    }
+    loadPacks();
+  }, []);
+
   // Quiz State
   const [quizStep, setQuizStep] = useState(1);
   const [quizAnswers, setQuizAnswers] = useState({
@@ -56,43 +78,9 @@ export default function HomePage() {
     primaryNeed: "",
     regionalTravel: ""
   });
- 
-  const [recommendedPack, setRecommendedPack] = useState<{ 
-  title: string; 
-  price: string; 
-  duration: string; 
-  features: { text: string; icon: React.ReactNode }[] 
-} | null>(null);
- const realVodafonePacks = [
-  { 
-    title: "Tourist Tera Pack 1", 
-    price: "2700 ALL", 
-    duration: "15 Days", 
-    features: [
-      { text: "1 TB Data", icon: <Wifi size={18} color="#e60000" /> }, 
-      { text: "1000 National Mins", icon: <PhoneCall size={18} color="#e60000" /> }
-    ] 
-  },
-  { 
-    title: "Tourist Tera Pack 2", 
-    price: "2900 ALL", 
-    duration: "21 Days", 
-    features: [
-      { text: "1.1 TB Data", icon: <Wifi size={18} color="#e60000" /> }, 
-      { text: "1000 National Mins", icon: <PhoneCall size={18} color="#e60000" /> }
-    ] 
-  },
-  { 
-    title: "Tourist Tera Pack 3", 
-    price: "3300 ALL", 
-    duration: "30 Days", 
-    features: [
-      { text: "1.2 TB Data", icon: <Wifi size={18} color="#e60000" /> }, 
-      { text: "3GB Greece Roaming", icon: <Globe2 size={18} color="#e60000" /> }, 
-      { text: "20GB Balkan Roaming", icon: <Globe2 size={18} color="#e60000" /> }
-    ] 
-  }
-];
+  
+  // NEW: Updated Recommended Pack state to match DB response
+  const [recommendedPack, setRecommendedPack] = useState<any | null>(null);
 
   const handleAnswer = (field: string, value: string) => {
     const newAnswers = { ...quizAnswers, [field]: value };
@@ -101,12 +89,15 @@ export default function HomePage() {
     if (quizStep < 4) {
       setQuizStep(quizStep + 1);
     } else {
-      if (newAnswers.regionalTravel === "Yes" || newAnswers.duration === "22-30 days") {
-        setRecommendedPack(realVodafonePacks[2]);
-      } else if (newAnswers.duration === "16-21 days") {
-        setRecommendedPack(realVodafonePacks[1]);
-      } else {
-        setRecommendedPack(realVodafonePacks[0]);
+      // NEW: Use the fetched 'packs' array instead of the hardcoded realVodafonePacks
+      if (packs.length > 0) {
+        if (newAnswers.regionalTravel === "Yes" || newAnswers.duration === "22-30 days") {
+          setRecommendedPack(packs[2] || packs[packs.length - 1]);
+        } else if (newAnswers.duration === "16-21 days") {
+          setRecommendedPack(packs[1] || packs[0]);
+        } else {
+          setRecommendedPack(packs[0]);
+        }
       }
       setQuizStep(5);
     }
@@ -116,28 +107,22 @@ export default function HomePage() {
 
   return (
     <>
-    {/* Promo Banner */}
-        <div className="promo-banner">
-          <Gift size={20} />
-          <span><strong>Summer Promo:</strong> Every Tourist Pack activation includes a 100% guaranteed reward!</span>
-          <Sparkles size={20} />
-        </div>
+      {/* Promo Banner */}
+      <div className="promo-banner">
+        <Gift size={20} />
+        <span><strong>Summer Promo:</strong> Every Tourist Pack activation includes a 100% guaranteed reward!</span>
+        <Sparkles size={20} />
+      </div>
 
       {/* Hero Section */}
       <section className="hero-quiz-container">
         <div className="hero-map-column">
-        <div className="hero-map-wrapper albania-mask-container">
-  <video 
-    autoPlay 
-    loop 
-    muted 
-    playsInline 
-    className="albania-video"
-  >
-    <source src="/assets/mapVideo.mp4" type="video/mp4" />
-  </video>
-</div>
-        <p className="hero-map-caption">A 30-second tour of Albania's best views</p>
+          <div className="hero-map-wrapper albania-mask-container">
+            <video autoPlay loop muted playsInline className="albania-video">
+              <source src="https://kigosmhsxdyewcdleaov.supabase.co/storage/v1/object/public/vodafone-assets/mapVideo.mp4" type="video/mp4" />
+            </video>
+          </div>
+          <p className="hero-map-caption">A 30-second tour of Albania's best views</p>
         </div>
 
         <div className="hero-quiz-content">
@@ -214,19 +199,23 @@ export default function HomePage() {
               </div>
               <h1 className="hero-title" style={{ marginBottom: "20px" }}>{recommendedPack.title}</h1>
               <div className="quiz-result-card">
-                <p style={{ fontSize: "32px", fontWeight: "bold", color: "#e60000", margin: "10px 0" }}>{recommendedPack.price}</p>
-                      <ul style={{ listStyle: "none", padding: 0, margin: "20px 0" }}>
-                        {recommendedPack.features.map((feature, i) => (
-                          <li key={i} style={{ padding: "12px 0", borderBottom: "1px solid #ddd", display: "flex", alignItems: "center", gap: "10px", color: "#333", fontWeight: "500" }}>
-                            {feature.icon}
-                            <span>{feature.text}</span>
-                          </li>
-                        ))}
-                      </ul>
+                <p style={{ fontSize: "32px", fontWeight: "bold", color: "#e60000", margin: "10px 0" }}>
+                  {recommendedPack.priceAll} LEK
+                </p>
+                <ul style={{ listStyle: "none", padding: 0, margin: "20px 0" }}>
+                  {/* NEW: Render feature labels from the database DTO */}
+                  {recommendedPack.features?.map((feature: any, i: number) => (
+                    <li key={i} style={{ padding: "12px 0", borderBottom: "1px solid #ddd", display: "flex", alignItems: "center", gap: "10px", color: "#333", fontWeight: "500" }}>
+                      <CheckCircle2 size={16} color="#e60000" />
+                      <span>{feature.label}</span>
+                    </li>
+                  ))}
+                </ul>
                 <button
                   className="pack-button"
                   onClick={() =>
-                    (window.location.href = `/activate?title=${encodeURIComponent(recommendedPack.title)}&price=${encodeURIComponent(recommendedPack.price)}&duration=${encodeURIComponent(recommendedPack.duration)}`)
+                    // NEW: Pass packId to the activation page instead of raw query string data
+                    (window.location.href = `/activate?packId=${recommendedPack.id}`)
                   }
                 >
                   Activate Pack
@@ -250,17 +239,14 @@ export default function HomePage() {
           Prefer to choose directly? Browse all official packages below.
         </p>
         <div className="pack-grid">
-          {realVodafonePacks.map((pack, index) => (
-            <PackCard
-              key={index}
-              title={pack.title}
-              subtitle="Perfect for tourists"
-              price={pack.price}
-              duration={pack.duration}
-              imageUrl={`/assets/pack${index + 1}.webp`}
-              features={pack.features}
-            />
-          ))}
+          {/* NEW: Map over dynamic database results, pass the whole pack object */}
+          {loadingPacks ? (
+            <p style={{ textAlign: "center", width: "100%" }}>Loading packs...</p>
+          ) : (
+            packs.map((pack) => (
+              <PackCard key={pack.id} pack={pack} />
+            ))
+          )}
         </div>
       </section>
 
@@ -280,7 +266,8 @@ export default function HomePage() {
           ))}
         </div>
       </section>
-<section className="digital-pass-section fade-in-up">
+
+      <section className="digital-pass-section fade-in-up">
         <div className="digital-pass-header">
           <h2 className="digital-pass-title">The "Zero-App" Digital Tourist Pass</h2>
           <p className="digital-pass-subtitle">
@@ -291,7 +278,7 @@ export default function HomePage() {
         <div className="digital-pass-mockups">
           <div className="mockup-container">
             <Image 
-              src="/assets/iphoneMockup.webp" 
+              src="https://kigosmhsxdyewcdleaov.supabase.co/storage/v1/object/public/vodafone-assets/iphoneMockup.webp" 
               alt="Vodafone Tourist Pass on Apple Wallet" 
               width={340} 
               height={680} 
@@ -306,7 +293,7 @@ export default function HomePage() {
 
           <div className="mockup-container">
             <Image 
-              src="/assets/androidMockup.webp" 
+              src="https://kigosmhsxdyewcdleaov.supabase.co/storage/v1/object/public/vodafone-assets/androidMockup.webp" 
               alt="Vodafone Tourist Pass on Google Wallet" 
               width={340} 
               height={680} 
@@ -318,6 +305,6 @@ export default function HomePage() {
       </section>
 
       <ExclusiveOffers />
-      </>
+    </>
   );
 }
