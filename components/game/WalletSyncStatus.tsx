@@ -2,36 +2,39 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, Wallet } from "lucide-react";
+import { Check, Gift, Mail } from "lucide-react";
 
-const STEPS = [
+const ESIM_STEPS = [
   "Verifying activation",
-  "Encrypting pack details",
-  "Writing to wallet",
+  "Preparing your eSIM",
+  "Emailing your eSIM & setup guide",
+] as const;
+
+const PHYSICAL_STEPS = [
+  "Verifying activation",
+  "Preparing your order",
+  "Emailing pickup & delivery details",
 ] as const;
 
 const SPRING = { type: "spring" as const, stiffness: 300, damping: 30 };
 
 interface WalletSyncStatusProps {
   packTitle: string;
+  email: string;
+  deliveryMethod: "ESIM" | "PHYSICAL_SIM";
   onComplete: () => void;
 }
 
-/** Detects platform to decide which wallet CTA to lead with. No QR-on-same-device dead end. */
-function useWalletPlatform() {
-  const [platform, setPlatform] = useState<"ios" | "android" | "other">("other");
-  useEffect(() => {
-    const ua = navigator.userAgent;
-    if (/iPhone|iPad|iPod/.test(ua)) setPlatform("ios");
-    else if (/Android/.test(ua)) setPlatform("android");
-  }, []);
-  return platform;
-}
-
-export default function WalletSyncStatus({ packTitle, onComplete }: WalletSyncStatusProps) {
+export default function WalletSyncStatus({
+  packTitle,
+  email,
+  deliveryMethod,
+  onComplete,
+}: WalletSyncStatusProps) {
   const [stepIndex, setStepIndex] = useState(0);
   const [done, setDone] = useState(false);
-  const platform = useWalletPlatform();
+  const isEsim = deliveryMethod === "ESIM";
+  const STEPS = isEsim ? ESIM_STEPS : PHYSICAL_STEPS;
 
   useEffect(() => {
     if (stepIndex >= STEPS.length) {
@@ -40,10 +43,7 @@ export default function WalletSyncStatus({ packTitle, onComplete }: WalletSyncSt
     }
     const t = setTimeout(() => setStepIndex((i) => i + 1), 550);
     return () => clearTimeout(t);
-  }, [stepIndex]);
-
-  const walletLabel =
-    platform === "ios" ? "Add to Apple Wallet" : platform === "android" ? "Add to Google Wallet" : "Save to phone wallet";
+  }, [stepIndex, STEPS.length]);
 
   return (
     <div className="game-card">
@@ -96,19 +96,38 @@ export default function WalletSyncStatus({ packTitle, onComplete }: WalletSyncSt
             <div className="wallet-done-icon">
               <Check size={26} color="#fff" strokeWidth={3} />
             </div>
-            <p className="wallet-done-title">Your eSIM is live in your wallet.</p>
+            <p className="wallet-done-title">
+              {isEsim ? "Check your inbox — your eSIM is on its way." : "Check your inbox — your order is confirmed."}
+            </p>
             <p className="wallet-done-sub">
-              No app needed — tap it at the airport gate like a boarding pass.
+              {isEsim ? (
+                <>
+                  We've emailed your eSIM QR code and step-by-step wallet setup instructions to{" "}
+                  <strong>{email}</strong>. Follow them to add it to your phone before you fly.
+                </>
+              ) : (
+                <>
+                  We've emailed your pickup and delivery details to <strong>{email}</strong>.
+                </>
+              )}
             </p>
 
-            <button onClick={onComplete} className="game-btn game-btn--dark" style={{ marginTop: 24 }}>
-              <Wallet size={16} />
-              {walletLabel}
+            <div className="wallet-game-hint">
+              <Gift size={18} />
+              <span>
+                One more thing — play a quick game next. Any credit you win is applied as a discount on your
+                next pack.
+              </span>
+            </div>
+
+            <button onClick={onComplete} className="game-btn game-btn--dark" style={{ marginTop: 20 }}>
+              <Gift size={16} />
+              Continue to my game credit
             </button>
 
-            <button onClick={onComplete} className="game-btn game-btn--ghost" style={{ marginTop: 12 }}>
-              Skip — take me to my game credit
-            </button>
+            <p className="wallet-done-footnote">
+              <Mail size={12} /> Didn't get the email? Check spam, or it can take a few minutes to arrive.
+            </p>
           </motion.div>
         )}
       </div>
