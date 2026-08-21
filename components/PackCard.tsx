@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Wifi, PhoneCall, Globe2, CheckCircle2 } from "lucide-react";
+import { allToEur } from "@/lib/currency";
 
 export default function PackCard({ pack }: { pack: any }) {
   let roaming = [];
@@ -36,8 +37,11 @@ export default function PackCard({ pack }: { pack: any }) {
         <h3 className="pack-title" style={{ marginTop: 0 }}>{pack.title}</h3>
         <p className="pack-subtitle" style={{ marginBottom: "20px" }}>{pack.subtitle}</p>
         
-        <p className="pack-price">
-          {pack.priceAll} LEK
+        <p className="pack-price" style={{ display: "flex", alignItems: "baseline", gap: "8px" }}>
+          <span>{pack.priceAll} LEK</span>
+          <span style={{ fontSize: "0.75rem", fontWeight: 400, color: "#888" }}>
+            (~{allToEur(pack.priceAll)} EUR)
+          </span>
         </p>
         <p className="pack-duration">Valid for {pack.durationDays} Days</p>
         
