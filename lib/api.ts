@@ -1,12 +1,14 @@
+import type { PackDetails } from "@/types/tourist";
+
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8080/api/v1";
 
-export async function fetchPacks() {
+export async function fetchPacks(): Promise<PackDetails[]> {
   const res = await fetch(`${API_BASE}/packs`);
   if (!res.ok) throw new Error("Failed to fetch packs");
   return res.json();
 }
 
-export async function fetchPackById(packId: string) {
+export async function fetchPackById(packId: string): Promise<PackDetails> {
   const res = await fetch(`${API_BASE}/packs/${packId}`);
   if (!res.ok) throw new Error("Failed to fetch pack details");
   return res.json();
