@@ -4,7 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Bot } from "lucide-react";
 import { GameResult } from "@/types/game";
-import { rollPrize } from "./GameContext";
+import { useGame } from "./GameContext";
 
 type Corner = "left" | "center" | "right";
 type Phase = "aim" | "result";
@@ -28,32 +28,42 @@ export default function TOBiKeeperGame({
 }: {
   onFinish: (result: GameResult) => void;
 }) {
+  const { playGame } = useGame();
   const [phase, setPhase] = useState<Phase>("aim");
   const [shotCorner, setShotCorner] = useState<Corner | null>(null);
   const [diveCorner, setDiveCorner] = useState<Corner | null>(null);
-  const [won, setWon] = useState(false);
+  const [scored, setScored] = useState(false);
+  const [claiming, setClaiming] = useState(false);
+  const [claimError, setClaimError] = useState<string | null>(null);
 
   const takeShot = (corner: Corner) => {
-    // TOBi guesses right ~45% of the time — feels fair, favors the tourist.
+    // Purely a visual "did TOBi guess right" animation — cosmetic only.
+    // The backend decides the actual win/loss when the shot is claimed.
     const tobiGuess: Corner =
       Math.random() < 0.45
         ? corner
         : CORNERS.filter((c) => c.id !== corner)[Math.floor(Math.random() * 2)].id;
 
-    const result = tobiGuess !== corner;
+    const localScored = tobiGuess !== corner;
 
     setShotCorner(corner);
     setDiveCorner(tobiGuess);
-    setWon(result);
+    setScored(localScored);
     setPhase("result");
   };
 
-  const finish = () => {
-    onFinish({
-      gameId: "tobi-keeper",
-      won,
-      prize: won ? rollPrize() : null,
-    });
+  const finish = async () => {
+    if (claiming) return;
+    setClaiming(true);
+    setClaimError(null);
+    try {
+      const result = await playGame("tobi-keeper");
+      onFinish(result);
+    } catch (e: any) {
+      setClaimError(e.message || "Couldn't claim this shot. Please try again.");
+    } finally {
+      setClaiming(false);
+    }
   };
 
   const shotX = shotCorner ? CORNERS.find((c) => c.id === shotCorner)!.x : 0;
@@ -94,7 +104,7 @@ export default function TOBiKeeperGame({
         </div>
 
         <div className="tobi-speech">
-          <p>{phase === "aim" ? TOBI_LINES.intro : won ? TOBI_LINES.goal : TOBI_LINES.save}</p>
+          <p>{phase === "aim" ? TOBI_LINES.intro : scored ? TOBI_LINES.goal : TOBI_LINES.save}</p>
         </div>
 
         {phase === "aim" ? (
@@ -113,11 +123,12 @@ export default function TOBiKeeperGame({
               transition={{ ...SPRING, delay: 0.35 }}
               className="tobi-result"
             >
-              <p className={`tobi-result-title ${won ? "tobi-result-title--win" : ""}`}>
-                {won ? "Goal! You win a prize." : "Saved. Better luck next time."}
+              <p className={`tobi-result-title ${scored ? "tobi-result-title--win" : ""}`}>
+                {scored ? "Goal! Let's see what you won." : "Saved. Better luck next time."}
               </p>
-              <button onClick={finish} className="game-btn game-btn--primary" style={{ marginTop: 20 }}>
-                Continue
+              {claimError && <p className="game-hub-empty-note">{claimError}</p>}
+              <button onClick={finish} disabled={claiming} className="game-btn game-btn--primary" style={{ marginTop: 20 }}>
+                {claiming ? "Claiming\u2026" : "Continue"}
               </button>
             </motion.div>
           </AnimatePresence>

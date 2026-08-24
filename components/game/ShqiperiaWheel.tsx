@@ -3,9 +3,22 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { GameResult } from "@/types/game";
-import { PRIZE_POOL } from "./GameContext";
+import { useGame } from "./GameContext";
 
-const SEGMENT_COUNT = PRIZE_POOL.length; // 7
+// Purely decorative — what the wheel visually lands on. The actual win/loss
+// and prize awarded come from the backend when the player claims their
+// spin; this pool no longer determines the outcome.
+const WHEEL_SEGMENTS = [
+  { id: "opa", label: "15% off your bill", sponsor: "OPA" },
+  { id: "hobus", label: "15% off intercity travel", sponsor: "HOBUS Albania" },
+  { id: "mon-cheri", label: "1+1 coffee", sponsor: "Mon Cheri" },
+  { id: "burger-king", label: "10% off your order", sponsor: "Burger King" },
+  { id: "smart-taxi", label: "20% off your ride", sponsor: "Smart Taxi" },
+  { id: "rentout", label: "10% off rental", sponsor: "Rentout" },
+  { id: "glow-skin", label: "10% off treatment", sponsor: "Glow Skin" },
+];
+
+const SEGMENT_COUNT = WHEEL_SEGMENTS.length; // 7
 const SEGMENT_ANGLE = 360 / SEGMENT_COUNT;
 const RADIUS = 120;
 const CENTER = 130;
@@ -61,9 +74,12 @@ export default function ShqiperiaWheel({
 }: {
   onFinish: (result: GameResult) => void;
 }) {
+  const { playGame } = useGame();
   const [spinning, setSpinning] = useState(false);
   const [rotation, setRotation] = useState(0);
   const [landedIndex, setLandedIndex] = useState<number | null>(null);
+  const [claiming, setClaiming] = useState(false);
+  const [claimError, setClaimError] = useState<string | null>(null);
 
   const spin = () => {
     if (spinning) return;
@@ -81,9 +97,18 @@ export default function ShqiperiaWheel({
     }, 2600);
   };
 
-  const finish = () => {
-    if (landedIndex === null) return;
-    onFinish({ gameId: "shqiperia-wheel", won: true, prize: PRIZE_POOL[landedIndex] });
+  const finish = async () => {
+    if (landedIndex === null || claiming) return;
+    setClaiming(true);
+    setClaimError(null);
+    try {
+      const result = await playGame("shqiperia-wheel");
+      onFinish(result);
+    } catch (e: any) {
+      setClaimError(e.message || "Couldn't claim this spin. Please try again.");
+    } finally {
+      setClaiming(false);
+    }
   };
 
   return (
@@ -105,12 +130,12 @@ export default function ShqiperiaWheel({
             transition={spinning ? { duration: 2.6, ease: [0.15, 0.7, 0.25, 1] } : SPRING_LAND}
           >
             <circle cx={CENTER} cy={CENTER} r={RADIUS} fill="var(--card-bg-alt)" stroke="var(--text-main)" strokeWidth="2" />
-            {PRIZE_POOL.map((prize, i) => {
+            {WHEEL_SEGMENTS.map((segment, i) => {
               const midAngle = i * SEGMENT_ANGLE + SEGMENT_ANGLE / 2;
               const labelPos = polarToCartesian(midAngle, RADIUS * 0.66);
               const iconPos = polarToCartesian(midAngle, RADIUS * 0.4);
               return (
-                <g key={prize.id}>
+                <g key={segment.id}>
                   <path
                     d={segmentPath(i)}
                     fill={i % 2 === 0 ? "var(--card-bg)" : "var(--card-bg-alt)"}
@@ -129,7 +154,7 @@ export default function ShqiperiaWheel({
                     fill="var(--text-main)"
                     transform={`rotate(${midAngle} ${labelPos.x} ${labelPos.y})`}
                   >
-                    {prize.sponsor}
+                    {segment.sponsor}
                   </text>
                 </g>
               );
@@ -149,10 +174,11 @@ export default function ShqiperiaWheel({
             transition={SPRING_LAND}
             className="wheel-result"
           >
-            <p className="wheel-result-title">{PRIZE_POOL[landedIndex].label}</p>
-            <p className="wheel-result-sub">at {PRIZE_POOL[landedIndex].sponsor}</p>
-            <button onClick={finish} className="game-btn game-btn--dark" style={{ marginTop: 20 }}>
-              Claim it
+            <p className="wheel-result-title">{WHEEL_SEGMENTS[landedIndex].label}</p>
+            <p className="wheel-result-sub">at {WHEEL_SEGMENTS[landedIndex].sponsor}</p>
+            {claimError && <p className="game-hub-empty-note">{claimError}</p>}
+            <button onClick={finish} disabled={claiming} className="game-btn game-btn--dark" style={{ marginTop: 20 }}>
+              {claiming ? "Claiming\u2026" : "Claim it"}
             </button>
           </motion.div>
         )}

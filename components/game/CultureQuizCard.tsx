@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, X } from "lucide-react";
 import { GameResult } from "@/types/game";
-import { rollPrize } from "./GameContext";
+import { useGame } from "./GameContext";
 
 interface Question {
   prompt: string;
@@ -36,10 +36,13 @@ export default function CultureQuizCard({
 }: {
   onFinish: (result: GameResult) => void;
 }) {
+  const { playGame } = useGame();
   const [step, setStep] = useState(0);
   const [correctCount, setCorrectCount] = useState(0);
   const [answered, setAnswered] = useState<Answered>(null);
   const [finished, setFinished] = useState(false);
+  const [claiming, setClaiming] = useState(false);
+  const [claimError, setClaimError] = useState<string | null>(null);
 
   const question = QUESTIONS[step];
 
@@ -66,10 +69,23 @@ export default function CultureQuizCard({
     }, 700);
   };
 
-  const won = correctCount >= 2;
+  // This local score is shown as immediate feedback during the quiz, but
+  // it's cosmetic — the backend is the one that actually decides whether a
+  // credit gets spent and what (if anything) is won.
+  const scoredWell = correctCount >= 2;
 
-  const finish = () => {
-    onFinish({ gameId: "culture-quiz", won, prize: won ? rollPrize() : null });
+  const finish = async () => {
+    if (claiming) return;
+    setClaiming(true);
+    setClaimError(null);
+    try {
+      const result = await playGame("culture-quiz");
+      onFinish(result);
+    } catch (e: any) {
+      setClaimError(e.message || "Couldn't submit your result. Please try again.");
+    } finally {
+      setClaiming(false);
+    }
   };
 
   return (
@@ -138,10 +154,11 @@ export default function CultureQuizCard({
           <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={SPRING} className="quiz-result">
             <p className="quiz-result-score">{correctCount} / {QUESTIONS.length} correct</p>
             <p className="quiz-result-sub">
-              {won ? "That's a win — prize unlocked." : "Score 2 of 3 next time to unlock a prize."}
+              {scoredWell ? "That's a win — let's see what you unlocked." : "Score 2 of 3 next time to unlock a prize."}
             </p>
-            <button onClick={finish} className="game-btn game-btn--primary" style={{ marginTop: 20 }}>
-              Continue
+            {claimError && <p className="game-hub-empty-note">{claimError}</p>}
+            <button onClick={finish} disabled={claiming} className="game-btn game-btn--primary" style={{ marginTop: 20 }}>
+              {claiming ? "Submitting\u2026" : "Continue"}
             </button>
           </motion.div>
         )}
