@@ -1,57 +1,119 @@
 "use client";
 
-import { createContext, useContext, useMemo, useState, ReactNode } from "react";
-import { GameId, GameResult, Prize } from "@/types/game";
+import { createContext, useCallback, useContext, useEffect, useMemo, useState, ReactNode } from "react";
+import { GameId, GameResult, GAME_CODE_BY_ID, GAME_ID_BY_CODE } from "@/types/game";
+import { fetchGameState, claimDailyCreditApi, playGameApi, GameHubState } from "@/lib/api";
 
 interface GameContextValue {
   credits: number;
   playedGames: GameId[];
-  lastResult: GameResult | null;
+  dailyClaimAvailable: boolean;
+  nextClaimAt: string | null;
+  loading: boolean;
+  error: string | null;
   canPlay: boolean;
-  spendCredit: () => boolean;
-  recordResult: (result: GameResult) => void;
-  clearLastResult: () => void;
+  refresh: () => Promise<void>;
+  claimDailyCredit: () => Promise<void>;
+  // Calls the backend to actually play a game and returns the
+  // server-decided outcome. Throws on failure (already played,
+  // insufficient credits, network error, etc.) — callers should catch it.
+  playGame: (gameId: GameId) => Promise<GameResult>;
 }
 
 const GameContext = createContext<GameContextValue | null>(null);
 
 export function GameProvider({
   children,
-  initialCredits = 1,
+  touristId,
 }: {
   children: ReactNode;
-  initialCredits?: number;
+  touristId: string;
 }) {
-  const [credits, setCredits] = useState(initialCredits);
+  const [credits, setCredits] = useState(0);
   const [playedGames, setPlayedGames] = useState<GameId[]>([]);
-  const [lastResult, setLastResult] = useState<GameResult | null>(null);
+  const [dailyClaimAvailable, setDailyClaimAvailable] = useState(false);
+  const [nextClaimAt, setNextClaimAt] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const spendCredit = () => {
-    if (credits <= 0) return false;
-    setCredits((c) => c - 1);
-    return true;
-  };
-
-  const recordResult = (result: GameResult) => {
-    setPlayedGames((prev) =>
-      prev.includes(result.gameId) ? prev : [...prev, result.gameId]
+  const applyState = (state: GameHubState) => {
+    setCredits(state.credits);
+    setPlayedGames(
+      state.playedGames
+        .map((code) => GAME_ID_BY_CODE[code])
+        .filter((id): id is GameId => Boolean(id))
     );
-    setLastResult(result);
+    setDailyClaimAvailable(state.dailyClaimAvailable);
+    setNextClaimAt(state.nextClaimAt);
   };
 
-  const clearLastResult = () => setLastResult(null);
+  // The single source of truth for credits/playedGames is always this
+  // fetch — never a local decrement. That's what makes a page refresh
+  // (or opening the hub in a second tab) safe: it re-reads the real
+  // server state instead of re-seeding a default.
+  const refresh = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const state = await fetchGameState(touristId);
+      applyState(state);
+    } catch (e: any) {
+      setError(e.message || "Failed to load game hub state");
+    } finally {
+      setLoading(false);
+    }
+  }, [touristId]);
+
+  useEffect(() => {
+    if (touristId) refresh();
+  }, [touristId, refresh]);
+
+  const claimDailyCredit = async () => {
+    setError(null);
+    try {
+      const state = await claimDailyCreditApi(touristId);
+      applyState(state);
+    } catch (e: any) {
+      setError(e.message || "Failed to claim daily credit");
+      throw e;
+    }
+  };
+
+  const playGame = async (gameId: GameId): Promise<GameResult> => {
+    setError(null);
+    const code = GAME_CODE_BY_ID[gameId];
+    try {
+      const res = await playGameApi(code, touristId);
+      return {
+        gameId,
+        won: res.won,
+        prize: res.won && res.prize ? res.prize : null,
+      };
+    } catch (e: any) {
+      setError(e.message || "Failed to play game");
+      throw e;
+    } finally {
+      // Re-sync from the server either way — a failed play might mean our
+      // local view was stale (e.g. already played in another tab), and a
+      // successful one definitely changed credits/playedGames.
+      refresh();
+    }
+  };
 
   const value = useMemo(
     () => ({
       credits,
       playedGames,
-      lastResult,
+      dailyClaimAvailable,
+      nextClaimAt,
+      loading,
+      error,
       canPlay: credits > 0,
-      spendCredit,
-      recordResult,
-      clearLastResult,
+      refresh,
+      claimDailyCredit,
+      playGame,
     }),
-    [credits, playedGames, lastResult]
+    [credits, playedGames, dailyClaimAvailable, nextClaimAt, loading, error, refresh]
   );
 
   return <GameContext.Provider value={value}>{children}</GameContext.Provider>;
@@ -61,19 +123,4 @@ export function useGame() {
   const ctx = useContext(GameContext);
   if (!ctx) throw new Error("useGame must be used within a GameProvider");
   return ctx;
-}
-
-// Fixed prize pool tied to the existing partner network (ExclusiveOffers.tsx)
-export const PRIZE_POOL: Prize[] = [
-  { id: "opa", label: "15% off your bill", sponsor: "OPA", code: "VF-OPA-2291" },
-  { id: "hobus", label: "15% off intercity travel", sponsor: "HOBUS Albania", code: "VF-HBS-4417" },
-  { id: "mon-cheri", label: "1+1 coffee", sponsor: "Mon Cheri", code: "VF-MCH-6603" },
-  { id: "burger-king", label: "10% off your order", sponsor: "Burger King", code: "VF-BKA-1258" },
-  { id: "smart-taxi", label: "20% off your ride", sponsor: "Smart Taxi", code: "VF-STX-8842" },
-  { id: "rentout", label: "10% off rental", sponsor: "Rentout", code: "VF-RNT-3390" },
-  { id: "glow-skin", label: "10% off treatment", sponsor: "Glow Skin", code: "VF-GLW-7715" },
-];
-
-export function rollPrize(): Prize {
-  return PRIZE_POOL[Math.floor(Math.random() * PRIZE_POOL.length)];
 }
