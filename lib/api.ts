@@ -24,18 +24,50 @@ export async function submitActivation(payload: any) {
   return res.json(); // returns { subscriptionId, touristId, orderRef, status }
 }
 
-export async function fetchGameState(touristId: string) {
-  const res = await fetch(`${API_BASE}/game-hub/state?touristId=${touristId}`);
-  if (!res.ok) throw new Error("Failed to fetch game state");
-  return res.json(); // returns { credits, playedGames }
+// Matches al.vodafone.vodafone_project_backend.dto.GameHubStateResponse
+export interface GameHubState {
+  credits: number;
+  playedGames: string[]; // backend game codes, e.g. "beat_tobi"
+  dailyClaimAvailable: boolean;
+  nextClaimAt: string | null; // ISO instant, null when claimable now
 }
 
-export async function playGameApi(gameCode: string, touristId: string) {
+// Matches al.vodafone.vodafone_project_backend.dto.PlayGameResponse
+export interface PlayGameApiResult {
+  won: boolean;
+  prize: { label: string; sponsor: string; code: string } | null;
+}
+
+// Small helper: every backend error comes back as { error: "..." } via
+// GlobalExceptionHandler — surface that message instead of a generic one
+// so e.g. "Daily game credit already claimed for today." reaches the UI.
+async function parseOrThrow<T>(res: Response, fallbackMessage: string): Promise<T> {
+  const data = await res.json().catch(() => null);
+  if (!res.ok) {
+    throw new Error((data && data.error) || fallbackMessage);
+  }
+  return data as T;
+}
+
+export async function fetchGameState(touristId: string): Promise<GameHubState> {
+  const res = await fetch(`${API_BASE}/game-hub/state?touristId=${touristId}`);
+  return parseOrThrow<GameHubState>(res, "Failed to fetch game state");
+}
+
+export async function claimDailyCreditApi(touristId: string): Promise<GameHubState> {
+  const res = await fetch(`${API_BASE}/game-hub/claim-daily-credit`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ touristId }),
+  });
+  return parseOrThrow<GameHubState>(res, "Failed to claim daily credit");
+}
+
+export async function playGameApi(gameCode: string, touristId: string): Promise<PlayGameApiResult> {
   const res = await fetch(`${API_BASE}/games/${gameCode}/play`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ touristId }),
   });
-  if (!res.ok) throw new Error("Failed to play game");
-  return res.json(); // returns { won, prize: { label, sponsor, code } }
+  return parseOrThrow<PlayGameApiResult>(res, "Failed to play game");
 }
