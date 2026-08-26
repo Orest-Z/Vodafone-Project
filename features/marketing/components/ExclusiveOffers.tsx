@@ -1,30 +1,18 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { QrCode } from "lucide-react";
+import { fetchSponsorOffers, SponsorOffer } from "@/features/game-hub/lib/api";
 
 interface Sponsor {
   name: string;
   discount: string;
-  logo: string; // pass your own image src here
+  logo: string;
 }
 
-const sponsors: Sponsor[] = [
-  { name: "OPA", discount: "15% ULJE", logo: "https://kigosmhsxdyewcdleaov.supabase.co/storage/v1/object/public/vodafone-assets/sponsors/opa.webp" },
-  { name: "HOBUS Albania", discount: "15% ULJE", logo: "https://kigosmhsxdyewcdleaov.supabase.co/storage/v1/object/public/vodafone-assets/sponsors/hobus.webp" },
-  { name: "Mon Cheri", discount: "1+1 Coffee", logo: "https://kigosmhsxdyewcdleaov.supabase.co/storage/v1/object/public/vodafone-assets/sponsors/mon-cheri.webp" },
-  { name: "Burger King", discount: "10% ULJE", logo: "https://kigosmhsxdyewcdleaov.supabase.co/storage/v1/object/public/vodafone-assets/sponsors/burger-king.webp" },
-  { name: "Smart Taxi", discount: "20% ULJE", logo: "https://kigosmhsxdyewcdleaov.supabase.co/storage/v1/object/public/vodafone-assets/sponsors/smart-taxi.webp" },
-  { name: "Rentout", discount: "10% OFF", logo: "https://kigosmhsxdyewcdleaov.supabase.co/storage/v1/object/public/vodafone-assets/sponsors/rentout.webp" },
-  { name: "Glow Skin", discount: "10% OFF", logo: "https://kigosmhsxdyewcdleaov.supabase.co/storage/v1/object/public/vodafone-assets/sponsors/glow-skin.webp" },
-];
-
-// Radial spread as a percentage of the container. Tweak these if boxes feel
-// too cramped or too far out once you have more (or fewer) sponsors.
 const RADIUS_X = 42;
 const RADIUS_Y = 38;
 
-// Evenly spaces `total` points around an ellipse, starting at 12 o'clock and
-// moving clockwise — works for any sponsor count, not just 5.
 function getPosition(index: number, total: number) {
   const angle = -90 + index * (360 / total);
   const rad = (angle * Math.PI) / 180;
@@ -35,14 +23,44 @@ function getPosition(index: number, total: number) {
 }
 
 export default function ExclusiveOffers() {
+  const [sponsors, setSponsors] = useState<Sponsor[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+  fetchSponsorOffers()
+    .then((data: SponsorOffer[]) =>
+      setSponsors(
+        data.map((d) => ({
+          name: d.name,
+          discount: d.discountLabel,
+          logo: d.logoUrl ?? "/fallback-logo.png",
+        }))
+      )
+    )
+    .catch((err) => {
+      console.error("Failed to load sponsor offers", err);
+      setSponsors([]);
+    })
+    .finally(() => setLoading(false));
+}, []);
+
   const positions = sponsors.map((_, i) => getPosition(i, sponsors.length));
+
+  if (loading) {
+    return (
+      <section className="offers-section">
+        <h2 className="offers-title">Tap &amp; enjoy exclusive offers</h2>
+      </section>
+    );
+  }
+
+  if (sponsors.length === 0) return null;
 
   return (
     <section className="offers-section">
       <h2 className="offers-title">Tap &amp; enjoy exclusive offers</h2>
 
       <div className="offers-network">
-        {/* Connecting lines — sit behind every card */}
         <svg
           className="offers-connector-svg"
           viewBox="0 0 100 100"
@@ -61,7 +79,6 @@ export default function ExclusiveOffers() {
           ))}
         </svg>
 
-        {/* Central Vodafone Tourist Pass card */}
         <div className="pass-card">
           <div className="pass-card-top">
             <span className="pass-card-brand">Vodafone</span>
@@ -83,7 +100,6 @@ export default function ExclusiveOffers() {
           </div>
         </div>
 
-        {/* Sponsor boxes */}
         {sponsors.map((sponsor, i) => (
           <div
             key={sponsor.name}
@@ -97,8 +113,6 @@ export default function ExclusiveOffers() {
               <span className="sponsor-name">{sponsor.name}</span>
               <span className="sponsor-discount">{sponsor.discount}</span>
             </div>
-
-            {/* Visible only on mobile — draws the vertical connector in the stack */}
             <span className="mobile-connector" aria-hidden="true" />
           </div>
         ))}
