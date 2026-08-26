@@ -42,3 +42,13 @@ export async function playDropApi(touristId: string): Promise<PlayGameApiResult>
   });
   return parseOrThrow<PlayGameApiResult>(res, "Failed to play drop");
 }
+export interface SponsorOffer {
+  name: string;
+  discountLabel: string;
+  logoUrl: string | null;
+}
+
+export async function fetchSponsorOffers(): Promise<SponsorOffer[]> {
+  const res = await fetch(`${API_BASE}/packs/sponsors`);
+  return parseOrThrow<SponsorOffer[]>(res, "Failed to fetch sponsor offers");
+}
