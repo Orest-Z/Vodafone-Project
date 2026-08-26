@@ -1,0 +1,34 @@
+.scratch-card-wrap {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--card-bg-alt);
+  touch-action: none;
+}
+
+.scratch-card-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.scratch-drop-intro,
+.scratch-drop-done {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+  padding: 32px 16px;
+  color: var(--text-main);
+}
+
+.scratch-drop-intro svg,
+.scratch-drop-done svg {
+  color: var(--primary);
+}
