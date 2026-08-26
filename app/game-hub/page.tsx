@@ -2,25 +2,16 @@
 
 import React, { Suspense, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { GameProvider } from "@/components/game/GameContext";
-import GameHubDashboard from "@/components/game/GameHubDashboard";
-import ShqiperiaWheel from "@/components/game/ShqiperiaWheel";
-import CultureQuizCard from "@/components/game/CultureQuizCard";
-import TOBiKeeperGame from "@/components/game/TOBiKeeperGame";
-import RewardPassReveal from "@/components/game/RewardPassReveal";
-import type { GameResult } from "@/types/game";
+import { GameProvider } from "@/features/game-hub/context/GameContext";
+import DailyDropCard from "@/features/game-hub/components/DailyDropCard";
+import RewardPassReveal from "@/features/game-hub/components/RewardPassReveal";
+import type { DropResult } from "@/features/game-hub/types/game";
+import "@/features/game-hub/components/scratchDrop.css";
 
-// Inner component to access the context and manage state
 function GameHubContent() {
-  // Manage which game overlay is open, or if the reward screen is open
-  const [activeGame, setActiveGame] = useState<string | null>(null);
-  const [rewardResult, setRewardResult] = useState<GameResult | null>(null);
+  const [rewardResult, setRewardResult] = useState<DropResult | null>(null);
 
-  // The mini-games call the backend themselves (via useGame().playGame)
-  // and hand back whatever the server actually decided — this just
-  // reacts to that outcome, it never invents one.
-  const handleGameFinish = (result: GameResult) => {
-    setActiveGame(null); // Close the game
+  const handleFinish = (result: DropResult) => {
     if (result.won) {
       setRewardResult(result);
     }
@@ -28,32 +19,13 @@ function GameHubContent() {
 
   return (
     <main className="game-hub-main">
-      {/* Dashboard handles game selection */}
-      <GameHubDashboard onSelectGame={(id) => setActiveGame(id)} />
+      <DailyDropCard onFinish={handleFinish} />
 
-      {/* Render the Overlay if a game or reward is active */}
-      {(activeGame || rewardResult) && (
+      {rewardResult && (
         <div className="game-overlay-wrapper">
-          <div
-            className="game-overlay-backdrop"
-            onClick={() => setActiveGame(null)} // Optional: clicking outside closes the game
-          />
+          <div className="game-overlay-backdrop" onClick={() => setRewardResult(null)} />
           <div className="game-overlay-content">
-            {activeGame === "shqiperia-wheel" && (
-              <ShqiperiaWheel onFinish={handleGameFinish} />
-            )}
-            {activeGame === "culture-quiz" && (
-              <CultureQuizCard onFinish={handleGameFinish} />
-            )}
-            {activeGame === "tobi-keeper" && (
-              <TOBiKeeperGame onFinish={handleGameFinish} />
-            )}
-            {rewardResult && (
-              <RewardPassReveal
-                result={rewardResult}
-                onClose={() => setRewardResult(null)}
-              />
-            )}
+            <RewardPassReveal result={rewardResult} onClose={() => setRewardResult(null)} />
           </div>
         </div>
       )}
@@ -85,7 +57,6 @@ function GameHubWithTourist() {
   );
 }
 
-// Main page wrapper — useSearchParams needs a Suspense boundary
 export default function GameHubPage() {
   return (
     <Suspense fallback={<main className="game-hub-main" />}>
