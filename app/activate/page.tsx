@@ -4,10 +4,10 @@ import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { Check } from "lucide-react";
-import TouristDetailsForm from "@/components/TouristDetailsForm";
-import WalletSyncStatus from "@/components/game/WalletSyncStatus";
-import type { TouristDetails, PackDetails } from "@/types/tourist";
-import { allToEur, formatAll } from "@/lib/currency";
+import TouristDetailsForm from "@/features/activation/components/TouristDetailsForm";
+import WalletSyncStatus from "@/features/activation/components/WalletSyncStatus";
+import type { TouristDetails, PackDetails } from "@/features/activation/types/tourist";
+import { allToEur, formatAll } from "@/features/activation/lib/currency";
 
 type Step = "DETAILS" | "PAYMENT" | "SUCCESS";
 
