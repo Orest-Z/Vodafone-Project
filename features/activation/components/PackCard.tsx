@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { Wifi, PhoneCall, Globe2, CheckCircle2 } from "lucide-react";
-import { allToEur } from "@/lib/currency";
+import { allToEur } from "@/features/activation/lib/currency";
 
 export default function PackCard({ pack }: { pack: any }) {
   let roaming = [];
