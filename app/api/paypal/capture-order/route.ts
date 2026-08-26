@@ -1,7 +1,7 @@
 // app/api/paypal/capture-order/route.ts
 import { NextRequest, NextResponse } from "next/server";
-import { getPayPalAccessToken, PAYPAL_API_BASE } from "@/lib/paypal";
-import type { TouristDetails } from "@/types/tourist";
+import { getPayPalAccessToken, PAYPAL_API_BASE } from "@/features/activation/lib/paypal";
+import type { TouristDetails } from "@/features/activation/types/tourist";
 
 const BACKEND_API_BASE =
   process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8080/api/v1";
