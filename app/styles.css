@@ -324,7 +324,7 @@ h1, h2, h3,
   position: absolute;
   inset: 0;
   z-index: 0;
-  background-image: url("/assets/headerImage.png");
+  background-image: url('https://kigosmhsxdyewcdleaov.supabase.co/storage/v1/object/public/vodafone-assets/headerImage.webp');
   background-size: cover;
   background-position: center 65%;
   /* "Static, low quality" mood — desaturated and slightly soft so it
