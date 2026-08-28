@@ -62,7 +62,7 @@ export default function WalletSyncStatus({
                 <li key={label} className="wallet-step">
                   <div
                     className={`wallet-step-marker ${
-                      complete ? "wallet-step-marker--complete" : active ? "wallet-step-marker--active" : ""
+                      complete ? "wallet-step-marker complete" : active ? "wallet-step-marker active" : ""
                     }`}
                   >
                     <AnimatePresence>
@@ -79,7 +79,7 @@ export default function WalletSyncStatus({
                     </AnimatePresence>
                     {active && !complete && <span className="wallet-step-dot" />}
                   </div>
-                  <span className={`wallet-step-label ${complete || active ? "wallet-step-label--active" : ""}`}>
+                  <span className={`wallet-step-label ${complete || active ? "wallet-step-label active" : ""}`}>
                     {label}
                   </span>
                 </li>
