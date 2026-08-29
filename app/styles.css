@@ -4112,3 +4112,511 @@ position: relative;
   font-size: 12px;
   color: var(--text-muted);
 }
+
+/* =========================================
+   CHECKOUT STEPPER (horizontal, icon-on-top /
+   label-below, connector runs between icons)
+   ========================================= */
+.checkout-stepper {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  margin: 0 auto 28px;
+  max-width: 380px;
+  gap: 0;
+}
+
+.checkout-stepper-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  width: 72px;
+}
+
+.checkout-stepper-marker {
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--card-bg-alt);
+  border: 1.5px solid var(--card-border);
+  color: var(--text-muted);
+  transition: all 0.2s ease;
+}
+
+.checkout-stepper-step--active .checkout-stepper-marker {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #ffffff;
+  box-shadow: 0 0 0 4px rgba(230, 0, 0, 0.15);
+}
+
+.checkout-stepper-step--completed .checkout-stepper-marker {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #ffffff;
+}
+
+.checkout-stepper-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-align: center;
+  line-height: 1.25;
+  max-width: 72px;
+}
+
+.checkout-stepper-step--active .checkout-stepper-label {
+  color: var(--primary);
+}
+
+.checkout-stepper-step--completed .checkout-stepper-label {
+  color: var(--text-main);
+}
+
+/* Connector sits between the step columns, vertically centered on the
+   marker circle (17px = half of the 34px marker), not on the label. */
+.checkout-stepper-connector {
+  flex: 1;
+  min-width: 16px;
+  height: 2px;
+  background: var(--card-border);
+  margin-top: 17px;
+  transition: background-color 0.2s ease;
+}
+
+.checkout-stepper-connector--filled {
+  background: var(--primary);
+}
+
+@media (max-width: 480px) {
+  .checkout-stepper {
+    max-width: 300px;
+  }
+
+  .checkout-stepper-step {
+    width: 60px;
+  }
+
+  .checkout-stepper-marker {
+    width: 28px;
+    height: 28px;
+  }
+
+  .checkout-stepper-step--active .checkout-stepper-marker {
+    box-shadow: 0 0 0 3px rgba(230, 0, 0, 0.15);
+  }
+
+  .checkout-stepper-connector {
+    margin-top: 14px;
+    min-width: 10px;
+  }
+
+  .checkout-stepper-label {
+    font-size: 9.5px;
+    max-width: 60px;
+  }
+}
+/* =========================================
+   ACTIVATE PAGE — TWO COLUMN LAYOUT (form + order summary)
+   ========================================= */
+.activate-shell--wide {
+  max-width: 1040px;
+}
+
+.activate-two-col {
+  display: grid;
+  grid-template-columns: 1.55fr 1fr;
+  gap: 28px;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .activate-two-col {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================================
+   ORDER SUMMARY CARD (checkout sidebar)
+   ========================================= */
+.order-summary-card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  position: sticky;
+  top: 20px;
+}
+
+.order-summary-hero {
+  position: relative;
+  width: 100%;
+  height: 130px;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.order-summary-hero-img {
+  object-fit: cover;
+}
+
+.order-summary-hero-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: linear-gradient(135deg, #34d399, #0ea86f);
+  color: #052e1e;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.order-summary-eyebrow {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.order-summary-title {
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 16px;
+}
+
+.order-summary-specs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.order-summary-spec {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  background: var(--card-bg-alt);
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  padding: 10px 6px;
+  color: var(--text-main);
+}
+
+.order-summary-spec svg {
+  color: var(--primary);
+}
+
+.order-summary-spec span {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.order-summary-spec small {
+  font-size: 10px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.order-summary-price {
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--card-border);
+}
+
+.order-summary-price-amount {
+  display: block;
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--primary);
+  line-height: 1.1;
+}
+
+.order-summary-price-eur {
+  font-size: 12.5px;
+  color: var(--text-muted);
+}
+
+.order-summary-section-label {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+}
+
+.order-summary-feature-list,
+.order-summary-secure-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.order-summary-feature-list li,
+.order-summary-secure-list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--text-main);
+}
+
+.order-summary-feature-list svg {
+  flex-shrink: 0;
+  color: var(--primary);
+}
+
+.order-summary-secure-list {
+  margin-bottom: 0;
+}
+
+.order-summary-secure-list li {
+  font-size: 12.5px;
+  color: var(--text-muted);
+}
+
+.order-summary-secure-list svg {
+  flex-shrink: 0;
+  color: var(--text-muted);
+}
+
+.order-summary-divider {
+  height: 1px;
+  background: var(--card-border);
+  margin: 16px 0;
+}
+
+/* =========================================
+   MOBILE REFINEMENTS — activate page
+   ========================================= */
+@media (max-width: 900px) {
+  .activate-two-col {
+    gap: 16px;
+  }
+
+  /* Sticky positioning only makes sense in a side-by-side layout —
+     once the columns stack it just fights the page scroll. */
+  .order-summary-card {
+    position: static;
+  }
+}
+
+@media (max-width: 480px) {
+  .activate-title {
+    font-size: 22px;
+  }
+
+  .activate-eyebrow {
+    font-size: 11px;
+  }
+
+  .order-summary-card {
+    padding: 16px;
+    border-radius: 14px;
+  }
+
+  .order-summary-hero {
+    height: 150px;
+  }
+
+  .order-summary-title {
+    font-size: 17px;
+    margin-bottom: 14px;
+  }
+
+  .order-summary-specs {
+    gap: 6px;
+  }
+
+  .order-summary-spec {
+    padding: 8px 4px;
+  }
+
+  .order-summary-spec span {
+    font-size: 12px;
+  }
+
+  .order-summary-spec small {
+    font-size: 9px;
+  }
+
+  .order-summary-price-amount {
+    font-size: 24px;
+  }
+
+  .order-summary-feature-list li,
+  .order-summary-secure-list li {
+    font-size: 12.5px;
+  }
+}
+
+/* =========================================
+   9. CARD PAYMENT (Advanced Card Fields)
+   Inline replacement for PayPal's default hosted "Debit or Credit Card"
+   overlay, styled to sit flush with the rest of the checkout card and
+   follow the light/dark theme toggle. The hosted number/expiry/cvv/name
+   inputs render in a cross-origin PayPal iframe, so only the *container*
+   here is themeable via CSS — the field text color itself is set in
+   CardPaymentForm.tsx's `style` prop, which is fed the same colors.
+   ========================================= */
+.payment-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 20px 0;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.payment-divider::before,
+.payment-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--card-border);
+}
+
+.card-payment-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.card-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.card-field-label {
+  font-weight: 600;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+/* The box a hosted PayPal field iframe sits inside. Mirrors
+   .tourist-form input exactly so it's visually indistinguishable from
+   the rest of the form's text inputs. */
+.card-field-input {
+  padding: 12px 16px;
+  background-color: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  /* Advanced card fields require an explicit container height. */
+  height: 44px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+}
+.card-field-input:focus-within {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(230, 0, 0, 0.2);
+}
+
+/* PayPal wraps each hosted field's iframe in its own div(s) with no
+   explicit width, and sets its own inline height (e.g. height:78px) on
+   the innermost wrapper. Inline styles beat our stylesheet rules unless
+   we use !important, so without it PayPal's taller box overflows below
+   our 44px field and shows through as unstyled white space. Force every
+   level of PayPal's injected wrapper to fill the flex item exactly. */
+.card-field-input > div,
+.card-field-input > div > div {
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.card-field-input iframe {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.card-billing-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-main);
+  margin: 6px 0 -4px;
+  padding-top: 14px;
+  border-top: 1px solid var(--card-border);
+}
+
+/* Reuses .tourist-form's input/label styling for the plain-text billing
+   address fields (these aren't sensitive card data, so no hosted iframe
+   is needed for them). */
+.card-billing-form.tourist-form {
+  gap: 15px;
+}
+
+.card-pay-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 14px;
+  margin-top: 4px;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background-color: var(--primary);
+  color: #ffffff;
+  transition: background-color 0.2s ease, opacity 0.2s ease;
+}
+
+.card-pay-btn:hover:not(:disabled) {
+  background-color: var(--primary-hover);
+}
+
+.card-pay-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.card-secure-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: var(--text-muted);
+  font-size: 12px;
+  margin: 4px 0 0;
+}
+
+.card-secure-note svg {
+  flex-shrink: 0;
+  color: var(--primary);
+}
+.card-field-input iframe {
+  position: relative !important;
+  width: 100% !important;
+  height: 100% !important;
+}
