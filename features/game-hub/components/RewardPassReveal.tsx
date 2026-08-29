@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
-import { GameResult } from "@/features/game-hub/types/game";
+import { DropResult } from "@/features/game-hub/types/game";
 
 const SPRING = { type: "spring" as const, stiffness: 300, damping: 30 };
 
@@ -22,7 +22,7 @@ export default function RewardPassReveal({
   result,
   onClose,
 }: {
-  result: GameResult;
+  result: DropResult;
   onClose: () => void;
 }) {
   const { won, prize } = result;
