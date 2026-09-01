@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, ChangeEvent, FormEvent } from "react";
-import { Smartphone, Store, ArrowLeft, ArrowRight, Info } from "lucide-react";
+import { Smartphone, Store, ArrowLeft, ArrowRight, Info, Gift } from "lucide-react";
 import { TouristDetails } from "../types/tourist";
 
 interface TouristDetailsFormProps {
@@ -72,7 +72,7 @@ export default function TouristDetailsForm({
           <input
             type="text"
             name="firstName"
-            placeholder="Enter first name"
+            placeholder="e.g. Maria"
             value={formData.firstName}
             onChange={handleChange}
             required
@@ -84,7 +84,7 @@ export default function TouristDetailsForm({
           <input
             type="text"
             name="lastName"
-            placeholder="Enter last name"
+            placeholder="e.g. Schmidt"
             value={formData.lastName}
             onChange={handleChange}
             required
@@ -97,7 +97,7 @@ export default function TouristDetailsForm({
         <input
           type="email"
           name="email"
-          placeholder="Enter email address"
+          placeholder="your@email.com — eSIM QR code delivered here"
           value={formData.email}
           onChange={handleChange}
           required
@@ -109,7 +109,7 @@ export default function TouristDetailsForm({
         <input
           type="text"
           name="passportNumber"
-          placeholder="Enter passport or ID number"
+          placeholder="e.g. AB1234567 — required for SIM registration by law"
           value={formData.passportNumber}
           onChange={handleChange}
           required
@@ -117,7 +117,7 @@ export default function TouristDetailsForm({
       </label>
 
       <div className="form-field-group">
-        <span className="form-field-label">SIM Delivery</span>
+        <span className="form-field-label">SIM Delivery Method</span>
         <div className="delivery-options">
           {DELIVERY_OPTIONS.map(({ value, label, sublabel, icon: Icon }) => {
             const active = formData.deliveryMethod === value;
@@ -162,9 +162,17 @@ export default function TouristDetailsForm({
         <p className="form-hint">
           <Info size={13} />
           {isEsim
-            ? "eSIM will be sent to your email instantly after payment."
+            ? "eSIM will be sent to your email instantly after successful payment."
             : "Bring your passport to any Vodafone store in Albania to collect your SIM."}
         </p>
+      </div>
+
+      <div className="promo-banner">
+        <Gift size={16} />
+        <span>
+          <strong>Summer Promo Included</strong> — every activation includes a 100% guaranteed
+          reward, play the Daily Drop after checkout for bonus data.
+        </span>
       </div>
 
       <div className="form-actions">
