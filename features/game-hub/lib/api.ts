@@ -1,6 +1,7 @@
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8080/api/v1";
 
 export interface GameHubState {
+  touristFirstName: string;
   credits: number;
   hasPlayedToday: boolean;
   dailyClaimAvailable: boolean;
@@ -42,6 +43,18 @@ export async function playDropApi(touristId: string): Promise<PlayGameApiResult>
   });
   return parseOrThrow<PlayGameApiResult>(res, "Failed to play drop");
 }
+export interface PrizeCatalogEntry {
+  label: string;
+  sponsor: string | null;
+  discountPercent: number | null;
+  chancePercent: number;
+}
+
+export async function fetchPrizeCatalog(): Promise<PrizeCatalogEntry[]> {
+  const res = await fetch(`${API_BASE}/game-hub/prizes`);
+  return parseOrThrow<PrizeCatalogEntry[]>(res, "Failed to fetch prize catalog");
+}
+
 export interface SponsorOffer {
   name: string;
   discountLabel: string;
