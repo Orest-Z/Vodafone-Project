@@ -1,7 +1,6 @@
 "use client";
 
 import { useMemo, useState, type ChangeEvent } from "react";
-import { useTheme } from "next-themes";
 import { Lock, ShieldCheck } from "lucide-react";
 import {
   PayPalCardFieldsProvider,
@@ -102,31 +101,30 @@ export default function CardPaymentForm({
   onError,
   disabled,
 }: CardPaymentFormProps) {
-  const { resolvedTheme } = useTheme();
-  const isDark = resolvedTheme === "dark";
-
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [billing, setBilling] = useState<BillingAddress>(EMPTY_BILLING);
 
-  // The hosted card inputs render inside a cross-origin PayPal iframe, so
-  // they can't read our CSS custom properties — we mirror the active
-  // --text-main / --text-muted values here as literal colors instead so
-  // the fields still track the light/dark toggle.
-  const cardFieldStyle = {
-  input: {
-    color: "#ffffff",
-    background: "transparent",
-    height: "100%",
-    "font-size": "15px",
-    "font-family": "Manrope, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif",
-  },
-  "::placeholder": {
-    color: "#8a8f9d",
-  },
-  ".invalid": {
-    color: "#e60000",
-  },
-};
+  // NOTE: we previously tried to theme these hosted fields to match the
+  // rest of the form (see git history) but PayPal's Card Fields iframe
+  // did not reliably honor the background/color overrides — it kept
+  // rendering its own opaque white background regardless of what was
+  // passed here, which made dark-mode text unreadable. Rather than fight
+  // an iframe we don't control, we leave color/background untouched —
+  // PayPal's own default styling (dark text on its own white field) is
+  // always legible on its own terms, in either theme. Only the plain
+  // billing-address inputs below (city, postal code, country, etc.) are
+  // themed to match light/dark mode.
+  const cardFieldStyle = useMemo(
+    () => ({
+      input: {
+        height: "100%",
+        outline: "none",
+        "font-size": "15px",
+        "font-family": "Manrope, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif",
+      },
+    }),
+    []
+  );
 
   const updateBilling =
     (field: keyof BillingAddress) =>
