@@ -5,16 +5,8 @@ import { motion } from "framer-motion";
 import { Gift, Sparkles } from "lucide-react";
 import { useGame } from "@/features/game-hub/context/GameContext";
 import ScratchCard from "./ScratchCard";
+import NextCreditTimer from "./NextCreditTimer";
 import { DropResult } from "@/features/game-hub/types/game";
-
-function formatClaimTime(iso: string) {
-  const date = new Date(iso);
-  const now = new Date();
-  const sameDay = date.toDateString() === now.toDateString();
-  return sameDay
-    ? `today at ${date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`
-    : date.toLocaleString([], { weekday: "short", hour: "2-digit", minute: "2-digit" });
-}
 
 export default function DailyDropCard({
   onFinish,
@@ -22,6 +14,7 @@ export default function DailyDropCard({
   onFinish: (result: DropResult) => void;
 }) {
   const {
+    touristName,
     credits,
     hasPlayedToday,
     dailyClaimAvailable,
@@ -29,6 +22,7 @@ export default function DailyDropCard({
     loading,
     error,
     canPlay,
+    refresh,
     claimDailyCredit,
     playDrop,
   } = useGame();
@@ -71,7 +65,18 @@ export default function DailyDropCard({
       <div className="game-hub-header">
         <div>
           <p className="game-eyebrow" style={{ color: "var(--primary)" }}>Daily Drop</p>
-          <h1 className="game-hub-title">One scratch. Real prizes.</h1>
+          <h1 className="game-hub-title">
+            {touristName ? `Welcome back, ${touristName}!` : "One scratch. Real prizes."}
+          </h1>
+          {touristName && (
+            <p className="game-hub-subtitle">
+              {hasPlayedToday
+                ? "You've claimed today's prize — come back tomorrow for more."
+                : canPlay
+                ? "Your scratch card is ready. Good luck!"
+                : "Scratch to win real, local prizes on us."}
+            </p>
+          )}
         </div>
         <div className="game-hub-credits">
           <span className="game-hub-credits-label">Game Credits</span>
@@ -80,6 +85,10 @@ export default function DailyDropCard({
       </div>
 
       {error && <p className="game-hub-empty-note">{error}</p>}
+
+      {!dailyClaimAvailable && nextClaimAt && (
+        <NextCreditTimer nextClaimAt={nextClaimAt} onElapsed={refresh} />
+      )}
 
       <motion.div
         initial={{ opacity: 0, y: 12 }}
@@ -120,11 +129,10 @@ export default function DailyDropCard({
                   </button>
                 </>
               ) : (
-                nextClaimAt && (
-                  <p className="reward-note">
-                    Next credit unlocks {formatClaimTime(nextClaimAt)}.
-                  </p>
-                )
+                <p className="reward-note">
+                  You're out of game credits for today — the timer above shows when your
+                  next one unlocks.
+                </p>
               )}
             </div>
           ) : (
