@@ -1,4 +1,4 @@
-import type { PackDetails } from "@/features/activation/types/tourist";
+import type { PackDetails } from "@/features/activation/types/tourist"; 
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8080/api/v1";
 
