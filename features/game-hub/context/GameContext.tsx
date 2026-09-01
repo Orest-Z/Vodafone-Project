@@ -5,6 +5,7 @@ import { DropResult } from "@/features/game-hub/types/game";
 import { fetchGameState, claimDailyCreditApi, playDropApi, GameHubState } from "@/features/game-hub/lib/api";
 
 interface GameContextValue {
+  touristName: string;
   credits: number;
   hasPlayedToday: boolean;
   dailyClaimAvailable: boolean;
@@ -26,6 +27,7 @@ export function GameProvider({
   children: ReactNode;
   touristId: string;
 }) {
+  const [touristName, setTouristName] = useState("");
   const [credits, setCredits] = useState(0);
   const [hasPlayedToday, setHasPlayedToday] = useState(false);
   const [dailyClaimAvailable, setDailyClaimAvailable] = useState(false);
@@ -34,6 +36,7 @@ export function GameProvider({
   const [error, setError] = useState<string | null>(null);
 
   const applyState = (state: GameHubState) => {
+    setTouristName(state.touristFirstName);
     setCredits(state.credits);
     setHasPlayedToday(state.hasPlayedToday);
     setDailyClaimAvailable(state.dailyClaimAvailable);
@@ -83,6 +86,7 @@ export function GameProvider({
 
   const value = useMemo(
     () => ({
+      touristName,
       credits,
       hasPlayedToday,
       dailyClaimAvailable,
@@ -94,7 +98,7 @@ export function GameProvider({
       claimDailyCredit,
       playDrop,
     }),
-    [credits, hasPlayedToday, dailyClaimAvailable, nextClaimAt, loading, error, refresh]
+    [touristName, credits, hasPlayedToday, dailyClaimAvailable, nextClaimAt, loading, error, refresh]
   );
 
   return <GameContext.Provider value={value}>{children}</GameContext.Provider>;
