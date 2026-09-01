@@ -1,6 +1,6 @@
 # Vodafone Tourist Pack — Frontend
 
-![Preview](public/assets/banner.png)
+![Preview](public/assets/banner.PNG)
 
 Next.js app for the tourist eSIM/data pack flow: browse packs, activate one, pay through PayPal, and land in a Game Hub where the tourist can claim a daily credit and scratch a card for a prize.
 
@@ -8,7 +8,7 @@ Talks to a separate Spring Boot backend over REST. This repo doesn't run without
 
 ## Stack
 
-- Next.js 14, App Router    
+- Next.js 14, App Router
 - TypeScript
 - Plain CSS (`app/styles.css`), theming via CSS custom properties and `[data-theme='dark']` — no Tailwind, no CSS modules
 - Framer Motion for the scratch card / reveal animations
