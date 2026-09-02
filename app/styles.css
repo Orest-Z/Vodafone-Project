@@ -4959,6 +4959,203 @@ position: relative;
 }
 
 /* =========================================
+   MY PACK PAGE
+   ========================================= */
+.my-pack-wrap {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 40px 20px 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.my-pack-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 4px;
+}
+
+.my-pack-badge {
+  flex-shrink: 0;
+  margin-top: 6px;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 4px 11px;
+  border-radius: 999px;
+}
+
+.my-pack-badge--active {
+  background: rgba(34, 197, 94, 0.12);
+  color: #16a34a;
+}
+
+.my-pack-badge--pending {
+  background: rgba(234, 179, 8, 0.12);
+  color: #b45309;
+}
+
+.my-pack-badge--cancelled {
+  background: rgba(239, 68, 68, 0.1);
+  color: #dc2626;
+}
+
+.my-pack-days-banner {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-left: 4px solid var(--primary);
+  border-radius: 10px;
+  padding: 18px 20px;
+}
+
+.my-pack-days-number {
+  font-size: 42px;
+  font-weight: 800;
+  color: var(--primary);
+  line-height: 1;
+}
+
+.my-pack-days-label {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.my-pack-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.my-pack-card-title {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  margin-bottom: 14px;
+}
+
+.my-pack-card-title svg {
+  color: var(--primary);
+}
+
+.my-pack-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--card-border);
+}
+
+.my-pack-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.my-pack-row:first-of-type {
+  padding-top: 0;
+}
+
+.my-pack-row-label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.my-pack-row-label svg {
+  color: var(--text-muted);
+}
+
+.my-pack-row-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-main);
+  text-align: right;
+}
+
+.my-pack-game-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin-top: 4px;
+}
+
+.my-pack-game-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--primary);
+}
+
+.my-pack-game-credits-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.my-pack-game-credits-value {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--text-main);
+  line-height: 1;
+}
+
+.my-pack-game-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--primary);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 10px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.15s ease;
+}
+
+.my-pack-game-btn:hover {
+  background: var(--primary-hover);
+}
+
+@media (max-width: 500px) {
+  .my-pack-game-banner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .my-pack-game-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* =========================================
    SKELETON LOADING STATES
    ========================================= */
 @keyframes skeleton-shimmer {
