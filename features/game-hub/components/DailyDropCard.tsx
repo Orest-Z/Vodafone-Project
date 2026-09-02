@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Gift, Sparkles } from "lucide-react";
+import { Gift, Trophy } from "lucide-react";
 import { useGame } from "@/features/game-hub/context/GameContext";
 import ScratchCard from "./ScratchCard";
 import NextCreditTimer from "./NextCreditTimer";
@@ -112,9 +112,13 @@ export default function DailyDropCard({
         <div className="game-card-body">
           {hasPlayedToday ? (
             <div className="scratch-drop-done">
-              <Sparkles size={28} />
-              <p>You've already opened today's drop.</p>
-              <p className="reward-note">Come back tomorrow for another one.</p>
+              <div className="scratch-done-icon">
+                <Trophy size={22} />
+              </div>
+              <p className="scratch-done-title">Today's drop claimed!</p>
+              <p className="reward-note">
+                Come back tomorrow to keep your streak alive — your next scratch unlocks automatically.
+              </p>
             </div>
           ) : !revealing ? (
             <div className="scratch-drop-intro">

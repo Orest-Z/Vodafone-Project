@@ -5,6 +5,8 @@ import { useSearchParams } from "next/navigation";
 import { GameProvider } from "@/features/game-hub/context/GameContext";
 import DailyDropCard from "@/features/game-hub/components/DailyDropCard";
 import RewardPassReveal from "@/features/game-hub/components/RewardPassReveal";
+import TodaysPrizes from "@/features/game-hub/components/TodaysPrizes";
+import GameFAQ from "@/features/game-hub/components/GameFAQ";
 import type { DropResult } from "@/features/game-hub/types/game";
 import "@/features/game-hub/components/scratchDrop.css";
 
@@ -20,6 +22,8 @@ function GameHubContent() {
   return (
     <main className="game-hub-main">
       <DailyDropCard onFinish={handleFinish} />
+      <TodaysPrizes />
+      <GameFAQ />
 
       {rewardResult && (
         <div className="game-overlay-wrapper">
