@@ -1,6 +1,7 @@
 "use client";
 
 import PackCard from "@/features/activation/components/PackCard";
+import PackCardSkeleton from "@/features/activation/components/PackCardSkeleton";
 import { ActivationStep } from "@/features/activation/components/ActivationStep";
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
@@ -12,7 +13,7 @@ import {
   Image as ImageIcon, Clock,
   ShoppingCart, MousePointerClick, Zap
 } from "lucide-react";
-import { NfcWaveIcon, SpeechMarkIcon, BadgeCheckIcon } from "@/shared/components/icons";
+import { BadgeCheckIcon } from "@/shared/components/icons";
 import ExclusiveOffers from "@/features/marketing/components/ExclusiveOffers";
 import StoreMapPins from "@/features/stores/components/StoreMapPins";
 
@@ -165,10 +166,15 @@ export default function HomePage() {
   return (
     <>
       {/* Promo Banner */}
-      <div className="promo-banner">
-        <SpeechMarkIcon size={16} color="#fff" />
-        <span><strong>Summer Promo:</strong> Every Tourist Pack activation includes a 100% guaranteed reward</span>
-      </div>
+      <button
+        className="promo-banner"
+        onClick={() => document.getElementById("packages")?.scrollIntoView({ behavior: "smooth", block: "start" })}
+      >
+        <strong>Summer Offer</strong>
+        <span className="promo-sep">—</span>
+        <span>Guaranteed Reward with every activation</span>
+        <span className="promo-arrow">→</span>
+      </button>
 
       {/* Hero Banner — full-bleed static background photo, bold stacked
           headline, and a rotatable 3D Albania shape with the map video
@@ -245,14 +251,14 @@ export default function HomePage() {
                 Where are you headed? <MapPin color="#e60000" size={22} />
               </h2>
               <p className="section-subtitle">Let's tailor the perfect pack for your adventure.</p>
-              <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "10px", width: "100%", maxWidth: "600px", margin: "0 auto" }}>
-                <button onClick={() => handleAnswer("destination", "Beach")} className="pack-button" style={{ flex: "1 1 140px", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}>
+              <div className="quiz-options">
+                <button className="quiz-option" onClick={() => handleAnswer("destination", "Beach")}>
                   <Sun size={18} /> The Riviera
                 </button>
-                <button onClick={() => handleAnswer("destination", "Mountains")} className="pack-button" style={{ flex: "1 1 140px", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}>
+                <button className="quiz-option" onClick={() => handleAnswer("destination", "Mountains")}>
                   <Mountain size={18} /> The Alps
                 </button>
-                <button onClick={() => handleAnswer("destination", "City")} className="pack-button" style={{ flex: "1 1 140px", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}>
+                <button className="quiz-option" onClick={() => handleAnswer("destination", "City")}>
                   <Building2 size={18} /> City Explorer
                 </button>
               </div>
@@ -264,10 +270,10 @@ export default function HomePage() {
               <h2 className="section-title" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}>
                 How long is your stay? <Calendar color="#e60000" size={20} />
               </h2>
-              <div style={{ display: "flex", gap: "12px", justifyContent: "center", marginTop: "22px", flexWrap: "wrap" }}>
-                <button onClick={() => handleAnswer("duration", "1-15 days")} className="pack-button" style={{ maxWidth: "200px" }}>1-15 Days</button>
-                <button onClick={() => handleAnswer("duration", "16-21 days")} className="pack-button" style={{ maxWidth: "200px" }}>16-21 Days</button>
-                <button onClick={() => handleAnswer("duration", "22-30 days")} className="pack-button" style={{ maxWidth: "200px" }}>Up to a Month</button>
+              <div className="quiz-options">
+                <button className="quiz-option" onClick={() => handleAnswer("duration", "1-15 days")}>1–15 Days</button>
+                <button className="quiz-option" onClick={() => handleAnswer("duration", "16-21 days")}>16–21 Days</button>
+                <button className="quiz-option" onClick={() => handleAnswer("duration", "22-30 days")}>Up to a Month</button>
               </div>
             </div>
           )}
@@ -277,9 +283,13 @@ export default function HomePage() {
               <h2 className="section-title" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}>
                 What is your primary need? <Smartphone color="#e60000" size={20} />
               </h2>
-              <div style={{ display: "flex", gap: "12px", justifyContent: "center", marginTop: "22px", flexWrap: "wrap" }}>
-                <button onClick={() => handleAnswer("primaryNeed", "Data")} className="pack-button" style={{ maxWidth: "250px" }}>Heavy Internet/Maps</button>
-                <button onClick={() => handleAnswer("primaryNeed", "Calls")} className="pack-button" style={{ maxWidth: "250px" }}>Calls &amp; Communication</button>
+              <div className="quiz-options">
+                <button className="quiz-option" onClick={() => handleAnswer("primaryNeed", "Data")}>
+                  <Globe size={18} /> Heavy Internet / Maps
+                </button>
+                <button className="quiz-option" onClick={() => handleAnswer("primaryNeed", "Calls")}>
+                  <Smartphone size={18} /> Calls &amp; Communication
+                </button>
               </div>
             </div>
           )}
@@ -290,27 +300,26 @@ export default function HomePage() {
                 Visiting neighboring countries? <Globe color="#e60000" size={20} />
               </h2>
               <p className="section-subtitle">We offer roaming in Greece and the Western Balkans.</p>
-              <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
-                <button onClick={() => handleAnswer("regionalTravel", "Yes")} className="pack-button" style={{ maxWidth: "200px" }}>Yes, I am</button>
-                <button onClick={() => handleAnswer("regionalTravel", "No")} className="pack-button" style={{ maxWidth: "200px", background: "#555" }}>No, just Albania</button>
+              <div className="quiz-options">
+                <button className="quiz-option" onClick={() => handleAnswer("regionalTravel", "Yes")}>Yes, I am</button>
+                <button className="quiz-option" onClick={() => handleAnswer("regionalTravel", "No")}>No, just Albania</button>
               </div>
             </div>
           )}
 
           {quizStep === 5 && recommendedPack && (
             <div>
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", color: "#e60000", fontWeight: "bold", marginBottom: "8px" }}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", color: "var(--primary)", fontWeight: "bold", marginBottom: "8px" }}>
                 <BadgeCheckIcon size={20} color="#e60000" /> Perfect Match Found!
               </div>
               <h2 className="section-title" style={{ marginBottom: "16px" }}>{recommendedPack.title}</h2>
               <div className="quiz-result-card">
-                <p style={{ fontSize: "30px", fontWeight: "bold", color: "#e60000", margin: "8px 0" }}>
+                <p style={{ fontSize: "30px", fontWeight: "bold", color: "var(--primary)", margin: "8px 0" }}>
                   {recommendedPack.priceAll} LEK
                 </p>
                 <ul style={{ listStyle: "none", padding: 0, margin: "16px 0" }}>
-                  {/* NEW: Render feature labels from the database DTO */}
                   {recommendedPack.features?.map((feature: any, i: number) => (
-                    <li key={i} style={{ padding: "12px 0", borderBottom: "1px solid #ddd", display: "flex", alignItems: "center", gap: "10px", color: "#333", fontWeight: "500" }}>
+                    <li key={i} className="pack-feature">
                       <CheckCircle2 size={16} color="#e60000" />
                       <span>{feature.label}</span>
                     </li>
@@ -318,16 +327,13 @@ export default function HomePage() {
                 </ul>
                 <button
                   className="pack-button"
-                  onClick={() =>
-                    // NEW: Pass packId to the activation page instead of raw query string data
-                    (window.location.href = `/activate?packId=${recommendedPack.id}`)
-                  }
+                  onClick={() => (window.location.href = `/activate?packId=${recommendedPack.id}`)}
                 >
                   Activate Pack
                 </button>
-                <button 
-                  onClick={() => { setQuizStep(1); setRecommendedPack(null); }} 
-                  style={{ background: "none", border: "none", color: "#777", textDecoration: "underline", marginTop: "15px", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: "5px" }}
+                <button
+                  onClick={() => { setQuizStep(1); setRecommendedPack(null); }}
+                  style={{ background: "none", border: "none", color: "var(--text-muted)", textDecoration: "underline", marginTop: "15px", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: "5px" }}
                 >
                   <RotateCcw size={14} /> Retake Quiz
                 </button>
@@ -352,7 +358,11 @@ export default function HomePage() {
         <div className="pack-grid">
           {/* NEW: Map over dynamic database results, pass the whole pack object */}
           {loadingPacks ? (
-            <p style={{ textAlign: "center", width: "100%" }}>Loading packs...</p>
+            <>
+              <PackCardSkeleton />
+              <PackCardSkeleton />
+              <PackCardSkeleton />
+            </>
           ) : (
             packs.map((pack, index) => (
               <PackCard
@@ -387,10 +397,6 @@ export default function HomePage() {
       <section className="digital-pass-section fade-in-up">
         <div className="digital-pass-grid">
           <div className="digital-pass-content">
-            <span className="digital-pass-badge">
-              <NfcWaveIcon size={14} color="#ff5252" /> Zero-App Digital Pass
-            </span>
-
             <h2 className="digital-pass-title digital-pass-title--display">
               <span className="digital-pass-title-row digital-pass-title-row--white">The &quot;Zero-App&quot;</span>
               <span className="digital-pass-title-row digital-pass-title-row--red">Digital Tourist Pass</span>

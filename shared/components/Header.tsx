@@ -20,14 +20,15 @@ const menuItems = [
     <header className="header">
       <div className="header-content">
         {/* Logo */}
-        <a href="/" className="https://kigosmhsxdyewcdleaov.supabase.co/storage/v1/object/public/vodafone-assets/logo.webp">
+        <a href="/" className="logo">
           <Image
             src="https://kigosmhsxdyewcdleaov.supabase.co/storage/v1/object/public/vodafone-assets/logo.webp"
-            objectFit="contain"
-            alt="vodafone logo"
-            width={50}
-            height={50}
+            alt="Vodafone"
+            width={36}
+            height={36}
+            style={{ objectFit: "contain" }}
           />
+          <span className="logo-text">Vodafone</span>
         </a>
 
         {/* Desktop Navigation */}
