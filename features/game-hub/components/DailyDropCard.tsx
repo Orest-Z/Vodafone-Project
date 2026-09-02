@@ -33,7 +33,20 @@ export default function DailyDropCard({
   if (loading && credits === 0 && !hasPlayedToday) {
     return (
       <div className="game-hub-wrap">
-        <p className="game-hub-empty-note">Loading your daily drop…</p>
+        <div className="game-hub-skeleton">
+          <div className="game-hub-skeleton-header">
+            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+              <div className="skeleton skeleton-line" style={{ width: 72, height: 12 }} />
+              <div className="skeleton skeleton-line" style={{ width: 220, height: 24 }} />
+              <div className="skeleton skeleton-line" style={{ width: 180, height: 13 }} />
+            </div>
+            <div className="game-hub-skeleton-credits">
+              <div className="skeleton skeleton-line" style={{ width: 80, height: 12 }} />
+              <div className="skeleton skeleton-line" style={{ width: 40, height: 32 }} />
+            </div>
+          </div>
+          <div className="skeleton" style={{ height: 220, borderRadius: 16, marginTop: 24 }} />
+        </div>
       </div>
     );
   }

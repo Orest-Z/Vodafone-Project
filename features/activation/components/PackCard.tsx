@@ -39,7 +39,7 @@ export default function PackCard({
       {/* Image Header: flexShrink: 0 ensures it doesn't get squished by the content below.
           overflow hidden here + .pack-card-image's hover transform is what gives the
           "image nudges up" effect without the image spilling out of its rounded corners. */}
-      <div className="pack-card-media" style={{ height: "200px", position: "relative", width: "100%", flexShrink: 0, overflow: "hidden" }}>
+      <div className="pack-card-media skeleton" style={{ height: "200px", position: "relative", width: "100%", flexShrink: 0, overflow: "hidden", borderRadius: 0 }}>
         {badge && (
           <span className={`pack-badge pack-badge--${badge}`}>{BADGE_LABEL[badge]}</span>
         )}

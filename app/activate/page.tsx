@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, Suspense } from "react";
+import PageLoader from "@/shared/components/PageLoader";
 import { useRouter, useSearchParams } from "next/navigation";
 import TouristDetailsForm from "@/features/activation/components/TouristDetailsForm";
 import CheckoutStepper from "@/features/activation/components/CheckoutStepper";
@@ -51,7 +52,7 @@ function ActivateContent() {
   if (!packDetails) {
     return (
       <div className="checkout-dark-wrapper">
-        <div className="activate-loading">Loading pack details...</div>
+        <PageLoader label="Loading pack details..." />
       </div>
     );
   }
@@ -84,7 +85,7 @@ function ActivateContent() {
 
 export default function ActivatePage() {
   return (
-    <Suspense fallback={<div className="checkout-dark-wrapper"><div className="activate-loading">Loading...</div></div>}>
+    <Suspense fallback={<div className="checkout-dark-wrapper"><PageLoader /></div>}>
       <ActivateContent />
     </Suspense>
   );

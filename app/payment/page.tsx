@@ -10,6 +10,7 @@ import type { TouristDetails, PackDetails } from "@/features/activation/types/to
 import { allToEur, formatAll } from "@/features/activation/lib/currency";
 import { readCheckoutFormData, clearCheckoutFormData } from "@/features/activation/lib/checkoutSession";
 import { useState, useEffect, useMemo, Suspense } from "react";
+import PageLoader from "@/shared/components/PageLoader";
 type Step = "PAYMENT" | "SUCCESS";
 
 function PaymentContent() {
@@ -161,7 +162,7 @@ function PaymentContent() {
   if (!sessionChecked || !packDetails) {
     return (
       <div className="checkout-dark-wrapper">
-        <div className="activate-loading">Loading your order...</div>
+        <PageLoader label="Loading your order..." />
       </div>
     );
   }
@@ -246,12 +247,14 @@ function PaymentContent() {
 
                 <div style={{ marginTop: 24 }}>
                 {isSubmitting ? (
-                    <div className="activate-loading" style={{ minHeight: "auto", padding: "16px 0" }}>
-                    Confirming your payment...
+                    <div className="page-loader" style={{ minHeight: "auto", padding: "20px 0" }}>
+                      <div className="page-loader-ring" />
+                      <span>Confirming your payment...</span>
                     </div>
                 ) : !clientToken ? (
-                    <div className="activate-loading" style={{ minHeight: "auto", padding: "16px 0" }}>
-                    Preparing secure payment...
+                    <div className="page-loader" style={{ minHeight: "auto", padding: "20px 0" }}>
+                      <div className="page-loader-ring" />
+                      <span>Preparing secure payment...</span>
                     </div>
                 ) : (
                     <PayPalScriptProvider options={paypalOptions}>
@@ -347,7 +350,7 @@ function PaymentContent() {
 
 export default function PaymentPage() {
   return (
-    <Suspense fallback={<div className="checkout-dark-wrapper"><div className="activate-loading">Loading...</div></div>}>
+    <Suspense fallback={<div className="checkout-dark-wrapper"><PageLoader /></div>}>
       <PaymentContent />
     </Suspense>
   );
