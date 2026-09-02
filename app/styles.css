@@ -2547,6 +2547,30 @@ h1, h2, h3,
   color: var(--primary);
 }
 
+/* Inline promo note inside the checkout form — stays within the card */
+.form-promo-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: rgba(230, 0, 0, 0.05);
+  border: 1px solid rgba(230, 0, 0, 0.15);
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.form-promo-note svg {
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.form-promo-note strong {
+  color: var(--primary);
+  font-weight: 600;
+}
+
 /* Gamification tiles — tertiary CTAs, styled to sit below primary Activate buttons */
 .game-tile {
   padding: 20px;

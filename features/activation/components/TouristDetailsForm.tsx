@@ -167,11 +167,10 @@ export default function TouristDetailsForm({
         </p>
       </div>
 
-      <div className="promo-banner">
-        <Gift size={16} />
+      <div className="form-promo-note">
+        <Gift size={14} color="var(--primary)" />
         <span>
-          <strong>Summer Promo Included</strong> — every activation includes a 100% guaranteed
-          reward, play the Daily Drop after checkout for bonus data.
+          <strong>Promo included</strong> — guaranteed reward with every activation. Play the Daily Drop after checkout.
         </span>
       </div>
 
