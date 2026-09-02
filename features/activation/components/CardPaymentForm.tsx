@@ -104,16 +104,6 @@ export default function CardPaymentForm({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [billing, setBilling] = useState<BillingAddress>(EMPTY_BILLING);
 
-  // NOTE: we previously tried to theme these hosted fields to match the
-  // rest of the form (see git history) but PayPal's Card Fields iframe
-  // did not reliably honor the background/color overrides — it kept
-  // rendering its own opaque white background regardless of what was
-  // passed here, which made dark-mode text unreadable. Rather than fight
-  // an iframe we don't control, we leave color/background untouched —
-  // PayPal's own default styling (dark text on its own white field) is
-  // always legible on its own terms, in either theme. Only the plain
-  // billing-address inputs below (city, postal code, country, etc.) are
-  // themed to match light/dark mode.
   const cardFieldStyle = useMemo(
     () => ({
       input: {
@@ -121,6 +111,7 @@ export default function CardPaymentForm({
         outline: "none",
         "font-size": "15px",
         "font-family": "Manrope, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif",
+        color: "#111827",
       },
     }),
     []
@@ -163,7 +154,7 @@ export default function CardPaymentForm({
 
         <div className="card-field-group">
           <label className="card-field-label">Card number</label>
-         <div className="card-field-input" style={{ width: "100%" }}>
+          <div className="card-field-input" style={{ width: "100%" }}>
             <PayPalNumberField />
           </div>
         </div>
