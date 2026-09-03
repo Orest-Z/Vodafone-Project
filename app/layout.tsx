@@ -1,9 +1,9 @@
 // app/layout.tsx
 import './styles.css'; // ✅ Fix: Relative import for side-by-side files
 import { Archivo, Manrope } from 'next/font/google';
-import { ThemeProvider } from '@/components/ThemeProvider'; // 👈 Use your new wrapper!
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
+import { ThemeProvider } from '@/shared/components/ThemeProvider'; // 👈 Use your new wrapper!
+import Header from '@/shared/components/Header';
+import Footer from '@/shared/components/Footer';
 
 const archivo = Archivo({
   subsets: ['latin'],
