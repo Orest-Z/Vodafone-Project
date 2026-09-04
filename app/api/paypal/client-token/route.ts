@@ -1,7 +1,12 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { getPayPalAccessToken, PAYPAL_API_BASE } from "@/features/activation/lib/paypal";
+import { checkRateLimit, getClientIp, rateLimitResponse, RATE_LIMIT_RULES } from "@/features/activation/lib/rateLimit";
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+  if (!checkRateLimit(`client-token:${getClientIp(req)}`, RATE_LIMIT_RULES.clientToken)) {
+    return rateLimitResponse();
+  }
+
   try {
     const accessToken = await getPayPalAccessToken();
 

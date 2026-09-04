@@ -2,10 +2,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getPayPalAccessToken, PAYPAL_API_BASE } from "@/features/activation/lib/paypal";
 import { allToEur } from "@/features/activation/lib/currency";
+import { checkRateLimit, getClientIp, rateLimitResponse, RATE_LIMIT_RULES } from "@/features/activation/lib/rateLimit";
 
 const BACKEND_API_BASE =
   process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8080/api/v1";
 export async function POST(req: NextRequest) {
+  if (!checkRateLimit(`create-order:${getClientIp(req)}`, RATE_LIMIT_RULES.createOrder)) {
+    return rateLimitResponse();
+  }
+
   try {
     const { packId, email } = await req.json();
 

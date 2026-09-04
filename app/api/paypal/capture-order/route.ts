@@ -2,11 +2,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getPayPalAccessToken, PAYPAL_API_BASE } from "@/features/activation/lib/paypal";
 import type { TouristDetails } from "@/features/activation/types/tourist";
+import { checkRateLimit, getClientIp, rateLimitResponse, RATE_LIMIT_RULES } from "@/features/activation/lib/rateLimit";
 
 const BACKEND_API_BASE =
   process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8080/api/v1";
 
 export async function POST(req: NextRequest) {
+  if (!checkRateLimit(`capture-order:${getClientIp(req)}`, RATE_LIMIT_RULES.captureOrder)) {
+    return rateLimitResponse();
+  }
+
   try {
     const { orderID, packId, formData } = (await req.json()) as {
       orderID?: string;
@@ -47,14 +52,9 @@ export async function POST(req: NextRequest) {
           error: "Failed to capture PayPal payment",
           // Lets the client special-case recoverable declines (e.g. offer
           // the buyer a different funding source) instead of dead-ending.
+          // PayPal's raw error name/message/details are logged above, not
+          // returned here — they're internal debug info, not for the client.
           issue,
-          // TEMP DEBUG — remove once fully verified. Surfaces PayPal's
-          // actual error name/message instead of a generic string.
-          debug: {
-            name: captureData?.name,
-            message: captureData?.message,
-            details: captureData?.details,
-          },
         },
         { status: 502 }
       );
