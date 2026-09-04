@@ -2,7 +2,7 @@
 
 import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import { Calendar, CreditCard, Package, Gamepad2, ChevronRight, Wifi, Phone } from "lucide-react";
+import { Calendar, CreditCard, Package, Gamepad2, ChevronRight, Wifi, Phone, Wallet } from "lucide-react";
 import PageLoader from "@/shared/components/PageLoader";
 import { fetchSubscriptionStatus, SubscriptionStatus } from "@/features/my-pack/lib/api";
 
@@ -82,6 +82,14 @@ function MyPackContent() {
           {statusCfg.label}
         </span>
       </div>
+
+      {/* Wallet pass — the tourist's real Vodafone Tourist Pass, with the
+          partner-discount QR built into the pass itself (not a separate
+          code shown on this site). */}
+      <a href={data.appleWalletUrl} className="my-pack-wallet-btn" target="_blank" rel="noopener noreferrer">
+        <Wallet size={18} />
+        Add Vodafone Tourist Pass to Apple Wallet
+      </a>
 
       {/* Days remaining banner */}
       {remaining !== null && data.status === "ACTIVE" && (

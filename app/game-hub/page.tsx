@@ -10,7 +10,7 @@ import GameFAQ from "@/features/game-hub/components/GameFAQ";
 import type { DropResult } from "@/features/game-hub/types/game";
 import "@/features/game-hub/components/scratchDrop.css";
 
-function GameHubContent() {
+function GameHubContent({ touristId }: { touristId: string }) {
   const [rewardResult, setRewardResult] = useState<DropResult | null>(null);
 
   const handleFinish = (result: DropResult) => {
@@ -29,7 +29,7 @@ function GameHubContent() {
         <div className="game-overlay-wrapper">
           <div className="game-overlay-backdrop" onClick={() => setRewardResult(null)} />
           <div className="game-overlay-content">
-            <RewardPassReveal result={rewardResult} onClose={() => setRewardResult(null)} />
+            <RewardPassReveal result={rewardResult} touristId={touristId} onClose={() => setRewardResult(null)} />
           </div>
         </div>
       )}
@@ -56,7 +56,7 @@ function GameHubWithTourist() {
 
   return (
     <GameProvider touristId={touristId}>
-      <GameHubContent />
+      <GameHubContent touristId={touristId} />
     </GameProvider>
   );
 }

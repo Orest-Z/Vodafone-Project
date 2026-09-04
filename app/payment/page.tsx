@@ -1,7 +1,7 @@
 "use client";
 import { useRouter, useSearchParams } from "next/navigation";
 import { PayPalScriptProvider, PayPalButtons, FUNDING } from "@paypal/react-paypal-js";
-import { Check } from "lucide-react";
+import { BadgeCheckIcon } from "@/shared/components/icons";
 import WalletSyncStatus from "@/features/activation/components/WalletSyncStatus";
 import CheckoutStepper from "@/features/activation/components/CheckoutStepper";
 import OrderSummaryCard from "@/features/activation/components/OrderSummaryCard";
@@ -54,6 +54,22 @@ function PaymentContent() {
     setFormData(readCheckoutFormData(orderId));
     setSessionChecked(true);
   }, [orderId]);
+
+  // PayPal's SDK closes its own popup right after approval, and its internal
+  // cross-window messenger (postrobot) occasionally has a message still in
+  // flight when that happens — a known, harmless upstream quirk that has no
+  // effect on the actual capture, but surfaces as an unhandled rejection.
+  // Swallow only that specific one so it doesn't trip Next's dev overlay.
+  useEffect(() => {
+    const handlePayPalPostRobotNoise = (event: PromiseRejectionEvent) => {
+      const message = String(event.reason?.message || event.reason || "");
+      if (message.includes("postrobot_method")) {
+        event.preventDefault();
+      }
+    };
+    window.addEventListener("unhandledrejection", handlePayPalPostRobotNoise);
+    return () => window.removeEventListener("unhandledrejection", handlePayPalPostRobotNoise);
+  }, []);
 
   
 
@@ -114,10 +130,7 @@ function PaymentContent() {
           return actions.restart();
         }
 
-        const debugText = result.debug
-          ? ` [DEBUG name=${result.debug.name} message=${result.debug.message} details=${JSON.stringify(result.debug.details)}]`
-          : "";
-        throw new Error((result.error || "Payment capture failed") + debugText);
+        throw new Error(result.error || "Payment capture failed");
       }
 
       setOrderRef(result.orderRef);
@@ -313,7 +326,7 @@ function PaymentContent() {
           <>
             <div className="form-card" style={{ textAlign: "center" }}>
               <div className="activate-success-icon">
-                <Check size={26} color="#fff" strokeWidth={3} />
+                <BadgeCheckIcon size={40} color="#e60000" />
               </div>
               <h2 className="activate-success-title">Activation Successful!</h2>
 

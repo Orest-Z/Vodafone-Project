@@ -29,6 +29,7 @@ export default function DailyDropCard({
 
   const [revealing, setRevealing] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [dropResult, setDropResult] = useState<DropResult | null>(null);
 
   if (loading && credits === 0 && !hasPlayedToday) {
     return (
@@ -61,16 +62,25 @@ export default function DailyDropCard({
     }
   };
 
-  const handleRevealed = async () => {
+  // The random draw happens now, server-side, the moment the tourist asks
+  // to play — not after they finish scratching. That's what lets the
+  // scratch card show the *real* prize underneath as they clear it off,
+  // instead of a blank/black layer with the outcome decided afterward.
+  const handleReveal = async () => {
     setBusy(true);
     try {
       const result = await playDrop();
-      onFinish(result);
+      setDropResult(result);
+      setRevealing(true);
     } catch {
-      setRevealing(false);
     } finally {
       setBusy(false);
     }
+  };
+
+  const handleScratchRevealed = () => {
+    if (dropResult) onFinish(dropResult);
+    setRevealing(false);
   };
 
   return (
@@ -110,7 +120,14 @@ export default function DailyDropCard({
         style={{ marginTop: 24 }}
       >
         <div className="game-card-body">
-          {hasPlayedToday ? (
+          {/* `revealing` must be checked before `hasPlayedToday`: playDrop()
+              records the play server-side immediately, and its background
+              refresh() flips hasPlayedToday to true right away — before the
+              tourist has actually scratched anything. Without the
+              `!revealing` guard here, that refresh yanks the "claimed"
+              state in front of the scratch card the instant they hit
+              Reveal, so they never see it. */}
+          {hasPlayedToday && !revealing ? (
             <div className="scratch-drop-done">
               <div className="scratch-done-icon">
                 <Trophy size={22} />
@@ -140,7 +157,7 @@ export default function DailyDropCard({
                   <button
                     className="game-btn game-btn--primary"
                     disabled={busy}
-                    onClick={() => setRevealing(true)}
+                    onClick={handleReveal}
                   >
                     Reveal today's drop
                   </button>
@@ -153,7 +170,9 @@ export default function DailyDropCard({
               )}
             </div>
           ) : (
-            <ScratchCard onRevealed={handleRevealed} disabled={busy} />
+            dropResult && (
+              <ScratchCard result={dropResult} onRevealed={handleScratchRevealed} disabled={busy} />
+            )
           )}
         </div>
       </motion.div>

@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, Gift, Mail } from "lucide-react";
+import { Check, Ticket, Mail } from "lucide-react";
+import { BadgeCheckIcon } from "@/shared/components/icons";
 
 const ESIM_STEPS = [
   "Verifying activation",
@@ -46,7 +47,7 @@ export default function WalletSyncStatus({
   }, [stepIndex, STEPS.length]);
 
   return (
-    <div className="game-card">
+    <div className="game-card game-card--wide">
       <div className="game-card-header">
         <p className="game-eyebrow">Activation Confirmed</p>
         <h1 className="game-title">{packTitle}</h1>
@@ -94,7 +95,7 @@ export default function WalletSyncStatus({
             className="wallet-done"
           >
             <div className="wallet-done-icon">
-              <Check size={26} color="#fff" strokeWidth={3} />
+              <BadgeCheckIcon size={40} color="#e60000" />
             </div>
             <p className="wallet-done-title">
               {isEsim ? "Check your inbox — your eSIM is on its way." : "Check your inbox — your order is confirmed."}
@@ -113,7 +114,7 @@ export default function WalletSyncStatus({
             </p>
 
             <div className="wallet-game-hint">
-              <Gift size={18} />
+              <Ticket size={18} />
               <span>
                 One more thing — play a quick game next. Any credit you win is applied as a discount on your
                 next pack.
@@ -121,7 +122,6 @@ export default function WalletSyncStatus({
             </div>
 
             <button onClick={onComplete} className="game-btn game-btn--dark" style={{ marginTop: 20 }}>
-              <Gift size={16} />
               Continue to my game credit
             </button>
 

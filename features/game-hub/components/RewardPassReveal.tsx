@@ -1,28 +1,18 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { X } from "lucide-react";
+import { X, Wallet } from "lucide-react";
 import { DropResult } from "@/features/game-hub/types/game";
 
 const SPRING = { type: "spring" as const, stiffness: 300, damping: 30 };
 
-/** Fake but visually convincing barcode — deterministic from the code string. */
-function Barcode({ value }: { value: string }) {
-  const bars = Array.from(value).map((ch) => (ch.charCodeAt(0) % 4) + 1);
-  return (
-    <div className="reward-barcode">
-      {bars.map((w, i) => (
-        <div key={i} className="reward-barcode-bar" style={{ width: w, height: `${40 - (i % 3) * 6}px` }} />
-      ))}
-    </div>
-  );
-}
-
 export default function RewardPassReveal({
   result,
+  touristId,
   onClose,
 }: {
   result: DropResult;
+  touristId: string;
   onClose: () => void;
 }) {
   const { won, prize } = result;
@@ -84,17 +74,21 @@ export default function RewardPassReveal({
               <div className="reward-perforation" />
 
               <div className="reward-body">
-                <p className="reward-body-label">Show this at checkout</p>
-                <div className="reward-barcode-row">
-                  <Barcode value={prize?.code ?? ""} />
-                  <span className="reward-code">{prize?.code}</span>
-                </div>
-
                 <p className="reward-note">
-                  This has already been added to your Vodafone Tourist Pass — no extra step needed.
+                  This reward is redeemed straight from your Vodafone Tourist Pass in Apple
+                  Wallet — no code to show, no extra step. Just open your pass at checkout.
                 </p>
 
-                <button onClick={onClose} className="game-btn game-btn--dark" style={{ marginTop: 20 }}>
+                <a
+                  href={`/my-pack?touristId=${touristId}`}
+                  className="game-btn game-btn--dark"
+                  style={{ marginTop: 20, textDecoration: "none" }}
+                >
+                  <Wallet size={16} />
+                  Open my Tourist Pass
+                </a>
+
+                <button onClick={onClose} className="reward-done-link">
                   Done
                 </button>
               </div>

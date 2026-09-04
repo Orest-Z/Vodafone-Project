@@ -17,6 +17,8 @@ export interface SubscriptionStatus {
   amountPaid: number | null;
   currency: string | null;
   gameCredits: number;
+  appleWalletUrl: string;
+  googleWalletUrl: string;
 }
 
 export async function fetchSubscriptionStatus(touristId: string): Promise<SubscriptionStatus> {
