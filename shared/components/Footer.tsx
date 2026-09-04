@@ -87,6 +87,10 @@ export default function Footer() {
         <div className="footer-bottom">
           <div className="footer-legal">
             © 2025 Vodafone Albania. All rights reserved.
+            <span className="footer-legal-links">
+              <a href="/terms">Terms &amp; Conditions</a>
+              <a href="/privacy">Privacy Policy</a>
+            </span>
           </div>
           <div className="footer-social">
             {socialLinks.map((link, index) => (
