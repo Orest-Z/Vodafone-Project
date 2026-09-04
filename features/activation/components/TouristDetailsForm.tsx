@@ -3,6 +3,8 @@
 import { useState, ChangeEvent, FormEvent } from "react";
 import { Smartphone, Store, ArrowLeft, ArrowRight, Info, Gift } from "lucide-react";
 import { TouristDetails } from "../types/tourist";
+import PassportScanButton from "./PassportScanButton";
+import type { PassportScanResult } from "../lib/passportScan";
 
 interface TouristDetailsFormProps {
   onSubmit: (data: TouristDetails) => void;
@@ -53,6 +55,12 @@ export default function TouristDetailsForm({
 
   const selectDelivery = (value: TouristDetails["deliveryMethod"]) => {
     setFormData((prev) => ({ ...prev, deliveryMethod: value }));
+  };
+
+  // Scanning only ever autofills these three fields — email is never part
+  // of PassportScanResult, so it structurally cannot be touched here.
+  const handlePassportScanned = (fields: PassportScanResult) => {
+    setFormData((prev) => ({ ...prev, ...fields }));
   };
 
   const handleSubmit = (e: FormEvent) => {
@@ -116,6 +124,8 @@ export default function TouristDetailsForm({
         />
       </label>
 
+      <PassportScanButton onScanned={handlePassportScanned} />
+
       <div className="form-field-group">
         <span className="form-field-label">SIM Delivery Method</span>
         <div className="delivery-options">
@@ -154,8 +164,14 @@ export default function TouristDetailsForm({
             required
           />
           <span>
-            I agree to the <a href="#">Terms &amp; Conditions</a> and{" "}
-            <a href="#">Privacy Policy</a>
+            I agree to the{" "}
+            <a href="/terms" target="_blank" rel="noopener noreferrer">
+              Terms &amp; Conditions
+            </a>{" "}
+            and{" "}
+            <a href="/privacy" target="_blank" rel="noopener noreferrer">
+              Privacy Policy
+            </a>
           </span>
         </label>
 
