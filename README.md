@@ -2,29 +2,37 @@
 
 ![Preview](public/assets/banner.PNG)
 
-Next.js app for the tourist eSIM/data pack flow: browse packs, activate one, pay through PayPal, and land in a Game Hub where the tourist can claim a daily credit and scratch a card for a prize.
+Next.js app for the tourist eSIM/data pack flow: find or build a pack, activate it (optionally
+auto-filling your passport/ID via an on-device camera scan), pay through PayPal, add a Vodafone
+Tourist Pass to Apple/Google Wallet, and land in a Game Hub where a daily scratch card can win a
+real discount on your next pack.
 
 Talks to a separate Spring Boot backend over REST. This repo doesn't run without it.
 
 ## Stack
 
-- Next.js 14, App Router
+- Next.js 15, App Router, Turbopack
 - TypeScript
 - Plain CSS (`app/styles.css`), theming via CSS custom properties and `[data-theme='dark']` — no Tailwind, no CSS modules
 - Framer Motion for the scratch card / reveal animations
 - Lucide for icons
-- PayPal JS SDK, proxied through a couple of Next API routes so the client secret never reaches the browser
+- `tesseract.js` + `mrz` for 100% client-side passport/ID OCR (see below)
+- PayPal JS SDK, proxied through a few Next API routes so the client secret never reaches the browser
 
 ## Structure
 
 ```
-app/                    routes (activate, payment, game-hub) + PayPal API routes
+app/                       routes: /, /activate, /payment, /game-hub, /my-pack,
+                            /terms, /privacy, /wallet/{apple,google}/[id],
+                            plus the PayPal API routes
 features/
-  activation/           pack selection, checkout stepper, PayPal, tourist details form
-  game-hub/              daily drop, scratch card, reward reveal, prize catalog
-  marketing/             landing page offer sections
-  stores/                store locator map pins + data
-shared/                 header, footer, theme toggle, shared utils
+  activation/               pack selection, custom plan builder, checkout stepper,
+                             passport/ID scanner, PayPal, tourist details form
+  game-hub/                 daily drop, scratch card, reward reveal, prize catalog
+  my-pack/                  subscription-status lookup + wallet button
+  marketing/                landing page offer sections
+  stores/                   store locator map pins + data
+shared/                     header, footer, theme toggle, shared icons/utils
 ```
 
 Each feature owns its own `lib/api.ts` and talks to the backend directly — there's no shared API client.
@@ -38,6 +46,15 @@ npm run dev
 
 Needs the backend running on `localhost:8080` (or wherever `NEXT_PUBLIC_API_BASE_URL` points).
 
+### Testing on a phone (same Wi-Fi as your dev machine)
+
+Next.js's dev server blocks `/_next/*` asset requests from origins not listed in
+`allowedDevOrigins` (`next.config.ts`) — add your machine's current LAN IP there if it's changed.
+You'll also need `NEXT_PUBLIC_API_BASE_URL` pointed at that same LAN IP (not `localhost`) and the
+backend's `APP_CORS_ALLOWED_ORIGIN` to include it too. The live passport-camera view additionally
+needs a secure context (HTTPS, or exactly `localhost`) — it isn't available over plain
+`http://<lan-ip>`, and falls back automatically to the file-picker capture flow when it isn't.
+
 ## Environment variables
 
 | Variable | Used by | Notes |
@@ -49,14 +66,39 @@ Needs the backend running on `localhost:8080` (or wherever `NEXT_PUBLIC_API_BASE
 
 ## Flow, roughly
 
-1. `/` → pack selection → `/activate`
-2. `/activate` collects tourist details, redirects to `/payment` with the order/pack IDs
-3. `/payment` handles the PayPal capture, calls the backend to activate the pack, then redirects to `/game-hub?touristId=...`
-4. `/game-hub` reads `touristId` from the query string and mounts `GameProvider`, which drives credit balance, daily claim, and the scratch card end to end
+1. `/` → pick a fixed pack, or build a custom one (live-priced data/minutes/duration sliders) → `/activate`
+2. `/activate` collects tourist details — optionally auto-filled by scanning a passport/ID
+   entirely on-device — and redirects to `/payment` with the order/pack IDs
+3. `/payment` handles the PayPal capture, calls the backend to activate the pack, then redirects
+   to `/game-hub?touristId=...`
+4. `/game-hub` reads `touristId` from the query string and mounts `GameProvider`, which drives
+   credit balance, daily claim, and the scratch card end to end
+5. `/my-pack?touristId=...` — pack details, key dates, and the "Add to Apple Wallet" button; also
+   linked from the confirmation email and the Daily Drop reward screen
 
-The `touristId` is passed around as a plain query param, not stored in a cookie or session — worth keeping in mind if you're testing and the URL gets dropped.
+The `touristId` is passed around as a plain query param, not stored in a cookie or session — it's
+an unguessable UUID, not a sequential ID, but a leaked link grants full access with no
+re-authentication. Reasonable for a low-stakes, no-login tourist flow; worth hardening (short-lived
+signed tokens, email re-verification) before this ever handles anything higher-stakes.
+
+## Passport/ID scanning — privacy design
+
+The optional "Scan Passport / ID" button never uploads the photo anywhere:
+
+- OCR (`tesseract.js`) and MRZ parsing (`mrz`) run entirely in the browser.
+- Only the passport's Machine Readable Zone is read — the same standardized strip every airport
+  e-gate reads — not the printed page or photo.
+- Only three fields are ever extracted: first name, last name, document number. Everything else
+  the MRZ encodes (DOB, sex, nationality, expiry) is read but discarded immediately.
+- The photo, the canvas, and the full OCR text are all dropped the instant scanning finishes —
+  nothing is written to any storage, client or server.
+- A live camera view with an on-screen alignment guide is used when available (secure context
+  required); otherwise it falls back to a native file/camera picker with a static framing guide.
 
 ## Known rough edges
 
-- No loading skeletons on the activation form — a slow backend just shows a blank state.
-- Game Hub state isn't polled or revalidated on window focus, so if a tourist claims their credit on another tab/device it won't show up here until the next manual action triggers a refetch.
+- `next.config.ts`'s `allowedDevOrigins` needs manual updating if your LAN IP changes.
+- PassKit's free/draft tier caps total passes issued and expires each one after 48 hours — fine
+  for a demo, not for anything beyond it.
+- Game Hub state isn't polled or revalidated on window focus, so if a tourist claims their credit
+  on another tab/device it won't show up here until the next manual action triggers a refetch.
