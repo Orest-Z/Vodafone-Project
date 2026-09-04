@@ -2,14 +2,16 @@
 
 import PackCard from "@/features/activation/components/PackCard";
 import PackCardSkeleton from "@/features/activation/components/PackCardSkeleton";
+import CustomPlanBuilder from "@/features/activation/components/CustomPlanBuilder";
+import PackFeatureList from "@/features/activation/components/PackFeatureList";
 import { ActivationStep } from "@/features/activation/components/ActivationStep";
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
 import { 
-  MapPin, Sun, Mountain, Building2, Calendar, 
+  MapPin, Sun, Mountain, Building2, Calendar,
   Smartphone, Globe, Gift,
-  CheckCircle2, RotateCcw, ArrowDown,
+  RotateCcw, ArrowDown,
   Image as ImageIcon, Clock,
   ShoppingCart, MousePointerClick, Zap
 } from "lucide-react";
@@ -187,11 +189,18 @@ export default function HomePage() {
           <div className="hero-banner-content">
             <span className="hero-eyebrow hero-eyebrow--light">Mirë se vini · Welcome to Albania</span>
 
-            <h1 className="hero-title hero-title--display">
-              <span className="hero-title-row hero-title-row--white">Welcome</span>
+            <h1 className="hero-title hero-title--display hero-title--stacked">
+              <span className="hero-title-row hero-title-row--white">Stay</span>
+              <span className="hero-title-row hero-title-row--white">Connected</span>
+              <span className="hero-title-row hero-title-row--white">In Albania</span>
               <span className="hero-title-row">
-                <span className="hero-title-outline">To</span>{" "}
-                <span className="hero-title-red">Albania</span>
+                <span className="hero-title-outline">Today</span>
+              </span>
+              <span className="hero-title-row">
+                <span className="hero-title-red">Tomorrow</span>
+              </span>
+              <span className="hero-title-row">
+                <span className="hero-title-red">Together</span>
               </span>
             </h1>
 
@@ -318,12 +327,7 @@ export default function HomePage() {
                   {recommendedPack.priceAll} LEK
                 </p>
                 <ul style={{ listStyle: "none", padding: 0, margin: "16px 0" }}>
-                  {recommendedPack.features?.map((feature: any, i: number) => (
-                    <li key={i} className="pack-feature">
-                      <CheckCircle2 size={16} color="#e60000" />
-                      <span>{feature.label}</span>
-                    </li>
-                  ))}
+                  <PackFeatureList pack={recommendedPack} />
                 </ul>
                 <button
                   className="pack-button"
@@ -375,6 +379,15 @@ export default function HomePage() {
             ))
           )}
         </div>
+      </section>
+
+      {/* Custom Plan Builder — for tourists whose needs don't cleanly map to
+          one of the 3 fixed packs above. Builds a real (hidden) Pack behind
+          the scenes and reuses the exact same /activate?packId= flow. */}
+      <section id="custom-plan" style={{ margin: "48px 0 0" }}>
+        <h2 className="section-title">Or Create Your Own Plan</h2>
+        <p className="section-subtitle">Customize data and duration to match your trip exactly.</p>
+        <CustomPlanBuilder />
       </section>
 
       {/* How to Activate Section */}

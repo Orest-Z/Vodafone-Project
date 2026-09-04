@@ -14,6 +14,7 @@ export interface PackDetails {
   durationDays: number;
   dataAllowance: string;
   minutesAllowance: number;
+  roamingDetails: string | null;
   imageUrl: string;
   features: PackFeature[];
 }
@@ -25,4 +26,21 @@ export interface TouristDetails {
   passportNumber: string;
   deliveryMethod: "ESIM" | "PHYSICAL_SIM";
   termsAccepted: boolean;
+}
+
+// Matches al.vodafone.vodafone_project_backend.dto.CustomPlanRequest exactly.
+export interface CustomPlanSpec {
+  dataAllowanceGb: number | null;
+  unlimitedData: boolean;
+  minutesAllowance: number;
+  durationDays: number;
+}
+
+// Matches al.vodafone.vodafone_project_backend.dto.CustomPlanQuoteResponse exactly.
+export interface CustomPlanQuote {
+  priceAll: number;
+  dataAllowanceLabel: string;
+  minutesLabel: string;
+  durationLabel: string;
+  durationDays: number;
 }

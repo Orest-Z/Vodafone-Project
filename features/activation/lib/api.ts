@@ -1,4 +1,4 @@
-import type { PackDetails } from "@/features/activation/types/tourist"; 
+import type { CustomPlanQuote, CustomPlanSpec, PackDetails } from "@/features/activation/types/tourist";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8080/api/v1";
 
@@ -21,5 +21,25 @@ export async function submitActivation(payload: any) {
     body: JSON.stringify(payload),
   });
   if (!res.ok) throw new Error("Activation failed");
+  return res.json();
+}
+
+export async function quoteCustomPlan(spec: CustomPlanSpec): Promise<CustomPlanQuote> {
+  const res = await fetch(`${API_BASE}/packs/custom/quote`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(spec),
+  });
+  if (!res.ok) throw new Error("Failed to price custom plan");
+  return res.json();
+}
+
+export async function buildCustomPlan(spec: CustomPlanSpec): Promise<PackDetails> {
+  const res = await fetch(`${API_BASE}/packs/custom/build`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(spec),
+  });
+  if (!res.ok) throw new Error("Failed to build custom plan");
   return res.json();
 }
