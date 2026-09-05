@@ -11,7 +11,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "Do unused credits expire?",
-    a: "No — credits carry over. If you can't play today your credit stays in your account until you're ready. You can always check your balance at the top of this page.",
+    a: "No, credits carry over. If you can't play today your credit stays in your account until you're ready. You can always check your balance at the top of this page.",
   },
   {
     q: "How do I redeem my prize?",

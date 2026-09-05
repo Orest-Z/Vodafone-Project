@@ -36,7 +36,7 @@ export default function PassportCaptureGuide({ onConfirm, onCancel }: PassportCa
 
         <p className="passport-guide-text">
           Make sure the block of text at the <strong>bottom of the photo page</strong> (passport) or the{" "}
-          <strong>back of the card</strong> (ID) is flat, well-lit, and fills the frame — that strip is what
+          <strong>back of the card</strong> (ID) is flat, well-lit, and fills the frame. That strip is what
           gets read.
         </p>
 

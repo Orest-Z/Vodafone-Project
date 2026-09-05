@@ -94,7 +94,7 @@ export default function DailyDropCard({
           {touristName && (
             <p className="game-hub-subtitle">
               {hasPlayedToday
-                ? "You've claimed today's prize — come back tomorrow for more."
+                ? "You've claimed today's prize. Come back tomorrow for more."
                 : canPlay
                 ? "Your scratch card is ready. Good luck!"
                 : "Scratch to win real, local prizes on us."}
@@ -134,7 +134,7 @@ export default function DailyDropCard({
               </div>
               <p className="scratch-done-title">Today's drop claimed!</p>
               <p className="reward-note">
-                Come back tomorrow to keep your streak alive — your next scratch unlocks automatically.
+                Come back tomorrow to keep your streak alive. Your next scratch unlocks automatically.
               </p>
             </div>
           ) : !revealing ? (
@@ -164,7 +164,7 @@ export default function DailyDropCard({
                 </>
               ) : (
                 <p className="reward-note">
-                  You're out of game credits for today — the timer above shows when your
+                  You're out of game credits for today. The timer above shows when your
                   next one unlocks.
                 </p>
               )}

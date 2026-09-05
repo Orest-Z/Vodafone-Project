@@ -173,7 +173,7 @@ export default function HomePage() {
         onClick={() => document.getElementById("packages")?.scrollIntoView({ behavior: "smooth", block: "start" })}
       >
         <strong>Summer Offer</strong>
-        <span className="promo-sep">—</span>
+        <span className="promo-sep">•</span>
         <span>Guaranteed Reward with every activation</span>
         <span className="promo-arrow">→</span>
       </button>
@@ -206,7 +206,7 @@ export default function HomePage() {
 
             <p className="hero-text hero-text--light">
               Tourist SIM &amp; eSIM packs with instant activation, nationwide 4G/5G coverage,
-              and exclusive local perks — built for how you actually travel.
+              and exclusive local perks, built for how you actually travel.
             </p>
 
             <div className="hero-cta-row">
@@ -417,7 +417,7 @@ export default function HomePage() {
 
             <p className="digital-pass-subtitle digital-pass-subtitle--dark">
               One pass. Hundreds of benefits. Added instantly to your Apple or Google
-              Wallet — no app download required. Scan, tap, and unlock exclusive
+              Wallet. No app download required. Scan, tap, and unlock exclusive
               partner deals across Albania.
             </p>
 

@@ -47,8 +47,8 @@ export default function ExclusiveOffers() {
       <div className="offers-header">
         <h2 className="offers-title">Tap &amp; enjoy exclusive offers</h2>
         <p className="offers-subtitle">
-          Every Tourist Pass unlocks instant discounts at {sponsors.length} partners across Albania —
-          just show your QR code, no coupons or sign-up needed.
+          Every Tourist Pass unlocks instant discounts at {sponsors.length} partners across Albania.
+          Just show your QR code, no coupons or sign-up needed.
         </p>
       </div>
 

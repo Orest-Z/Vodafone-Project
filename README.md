@@ -76,6 +76,56 @@ needs a secure context (HTTPS, or exactly `localhost`) — it isn't available ov
 5. `/my-pack?touristId=...` — pack details, key dates, and the "Add to Apple Wallet" button; also
    linked from the confirmation email and the Daily Drop reward screen
 
+## Walkthrough
+
+### 1. Landing page (`/`)
+
+The hero pitches the pack, then two ways into checkout: a short "Pack Finder" quiz (trip type →
+recommended pack) or the grid of fixed packs below it. A "How to Activate" strip explains the
+whole flow in four steps before the tourist commits to anything.
+
+![Landing hero](public/assets/header.webp)
+![How to Activate](public/assets/howToActivate.webp)
+
+**Pack Finder** (`features/marketing`) — three quick questions narrow the fixed-pack grid down to
+one recommendation:
+
+![Pack Finder quiz](public/assets/packFinder.webp)
+
+**Fixed packs** — the same three packs the backend serves from `GET /api/v1/packs`, each a
+`Buy & Activate` button away from `/activate`:
+
+![All available tourist packs](public/assets/packs.webp)
+
+**Custom plan builder** (`features/activation`, `custom/build` + `custom/quote` endpoints) — data,
+minutes, and validity sliders re-price live against the backend on every drag, no page reload:
+
+![Create your own plan](public/assets/createPlan.webp)
+
+### 2. Activation (`/activate`)
+
+Personal info on the left (with the optional on-device passport/ID scan — see below), a live
+summary of the chosen pack and its price on the right. Nothing here calls the backend yet; it all
+gets handed to `/payment` via `sessionStorage`.
+
+![Activate a pack](public/assets/activation.webp)
+
+### 3. Payment → Game Hub
+
+PayPal capture happens on `/payment`, then the tourist lands on `/game-hub`, where the Daily Drop
+scratch card is playable once per day (Europe/Tirane, enforced by the backend, not the client):
+
+![Scratch card reward](public/assets/scratchCard.webp)
+
+### 4. My Pack & the digital Tourist Pass
+
+`/my-pack?touristId=...` — linked from the confirmation email and from the Daily Drop screen — is
+where the tourist adds the Vodafone Tourist Pass to Apple/Google Wallet. The pass itself is a
+QR-coded ticket, generated server-side by PassKit, that unlocks discounts at partner businesses
+around Albania with no extra app or sign-up:
+
+![Digital Tourist Pass in Apple/Google Wallet](public/assets/touristPass.webp)
+
 The `touristId` is passed around as a plain query param, not stored in a cookie or session — it's
 an unguessable UUID, not a sequential ID, but a leaked link grants full access with no
 re-authentication. Reasonable for a low-stakes, no-login tourist flow; worth hardening (short-lived

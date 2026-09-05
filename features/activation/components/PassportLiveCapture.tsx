@@ -136,7 +136,7 @@ export default function PassportLiveCapture({ onScanned, onError, onUnavailable,
         onError(outcome.error);
       }
     } catch {
-      onError("Something went wrong reading that photo — please try again or enter your details manually.");
+      onError("Something went wrong reading that photo. Please try again or enter your details manually.");
     }
   };
 

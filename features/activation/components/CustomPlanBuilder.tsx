@@ -32,7 +32,7 @@ export default function CustomPlanBuilder() {
       setQuoting(true);
       quoteCustomPlan({ dataAllowanceGb, unlimitedData, minutesAllowance, durationDays })
         .then(setQuote)
-        .catch(() => setError("Couldn't price this plan — please try again."))
+        .catch(() => setError("Couldn't price this plan. Please try again."))
         .finally(() => setQuoting(false));
     }, 300);
     return () => clearTimeout(timer);
@@ -46,7 +46,7 @@ export default function CustomPlanBuilder() {
       const pack = await buildCustomPlan({ dataAllowanceGb, unlimitedData, minutesAllowance, durationDays });
       window.location.href = `/activate?packId=${pack.id}`;
     } catch {
-      setError("Couldn't build your plan — please try again.");
+      setError("Couldn't build your plan. Please try again.");
       setBuilding(false);
     }
   };

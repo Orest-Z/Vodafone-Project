@@ -74,7 +74,7 @@ export default function OrderSummaryCard({ pack, badgeLabel }: OrderSummaryCardP
         </div>
         <div className="order-summary-spec">
           <Phone size={16} />
-          <span>{pack.minutesAllowance ?? "—"}</span>
+          <span>{pack.minutesAllowance ?? "N/A"}</span>
           <small>Minutes</small>
         </div>
         <div className="order-summary-spec">

@@ -105,7 +105,7 @@ export default function TouristDetailsForm({
         <input
           type="email"
           name="email"
-          placeholder="your@email.com — eSIM QR code delivered here"
+          placeholder="your@email.com, eSIM QR code delivered here"
           value={formData.email}
           onChange={handleChange}
           required
@@ -117,7 +117,7 @@ export default function TouristDetailsForm({
         <input
           type="text"
           name="passportNumber"
-          placeholder="e.g. AB1234567 — required for SIM registration by law"
+          placeholder="e.g. AB1234567, required for SIM registration by law"
           value={formData.passportNumber}
           onChange={handleChange}
           required
@@ -186,7 +186,7 @@ export default function TouristDetailsForm({
       <div className="form-promo-note">
         <Gift size={14} color="var(--primary)" />
         <span>
-          <strong>Promo included</strong> — guaranteed reward with every activation. Play the Daily Drop after checkout.
+          <strong>Promo included</strong>: guaranteed reward with every activation. Play the Daily Drop after checkout.
         </span>
       </div>
 

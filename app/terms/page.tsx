@@ -25,7 +25,7 @@ export default function TermsPage() {
             visitors to Albania. Each Pack includes a fixed data allowance, national minutes, and a
             validity period in days, delivered either as an eSIM (digital) or a physical SIM
             collected in-store. You may also build a Custom Plan, choosing your own data, minutes,
-            and validity within the ranges offered by the Custom Plan tool — its price is calculated
+            and validity within the ranges offered by the Custom Plan tool. Its price is calculated
             automatically and shown to you before you continue to payment.
           </p>
         </section>
@@ -36,7 +36,7 @@ export default function TermsPage() {
             Albanian law requires a valid passport or national ID number to be recorded against every
             SIM activation, tourist or otherwise. You must provide accurate identity details during
             activation. You may type these manually or use the optional &ldquo;Scan Passport / ID&rdquo;
-            feature — see our{" "}
+            feature, see our{" "}
             <a href="/privacy">Privacy Policy</a> for exactly how that feature works and what it does
             (and does not) do with your document photo.
           </p>
@@ -48,7 +48,7 @@ export default function TermsPage() {
             Pack prices are set in Albanian Lek (ALL) and converted to Euro (EUR) for payment, at the
             rate shown on the checkout page at the time of purchase. Payment is processed by PayPal;
             we accept PayPal balance, linked bank accounts, and major debit/credit cards through
-            PayPal&rsquo;s checkout. We never see or store your full card number — PayPal handles that
+            PayPal&rsquo;s checkout. We never see or store your full card number. PayPal handles that
             directly. An activation is only confirmed once PayPal has successfully captured payment.
           </p>
         </section>

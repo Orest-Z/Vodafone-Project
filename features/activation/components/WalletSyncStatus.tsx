@@ -98,7 +98,7 @@ export default function WalletSyncStatus({
               <BadgeCheckIcon size={40} color="#e60000" />
             </div>
             <p className="wallet-done-title">
-              {isEsim ? "Check your inbox — your eSIM is on its way." : "Check your inbox — your order is confirmed."}
+              {isEsim ? "Check your inbox. Your eSIM is on its way." : "Check your inbox. Your order is confirmed."}
             </p>
             <p className="wallet-done-sub">
               {isEsim ? (
@@ -116,7 +116,7 @@ export default function WalletSyncStatus({
             <div className="wallet-game-hint">
               <Ticket size={18} />
               <span>
-                One more thing — play a quick game next. Any credit you win is applied as a discount on your
+                One more thing: play a quick game next. Any credit you win is applied as a discount on your
                 next pack.
               </span>
             </div>

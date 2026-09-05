@@ -22,26 +22,26 @@ export default function PrivacyPage() {
           <h2>1. Information We Collect</h2>
           <ul className="legal-list">
             <li>
-              <strong>Identity details</strong> — first name, last name, and passport/ID number,
+              <strong>Identity details</strong>: first name, last name, and passport/ID number,
               provided by you (typed manually or via the on-device passport scanner described below).
             </li>
             <li>
-              <strong>Contact details</strong> — your email address, used to send your eSIM/pickup
+              <strong>Contact details</strong>: your email address, used to send your eSIM/pickup
               confirmation and Pack details.
             </li>
             <li>
-              <strong>Payment confirmation</strong> — the PayPal order and capture reference and the
+              <strong>Payment confirmation</strong>: the PayPal order and capture reference and the
               amount paid. We never receive or store your card number; PayPal processes that directly.
             </li>
             <li>
-              <strong>Pack &amp; usage data</strong> — the Pack you purchased, delivery method, order
+              <strong>Pack &amp; usage data</strong>: the Pack you purchased, delivery method, order
               reference, and Daily Drop game credit balance.
             </li>
           </ul>
         </section>
 
         <section className="legal-section legal-section--highlight">
-          <h2>2. Passport/ID Scanning — how it actually works</h2>
+          <h2>2. Passport/ID Scanning: how it actually works</h2>
           <p>
             The optional &ldquo;Scan Passport / ID&rdquo; feature is designed so your document photo
             never leaves your device:
@@ -49,13 +49,13 @@ export default function PrivacyPage() {
           <ul className="legal-list">
             <li>The photo is read and processed entirely in your browser, on your own device.</li>
             <li>
-              It is never uploaded, transmitted, or sent to any Vodafone server or any third party —
-              there is no network request involved in reading it.
+              It is never uploaded, transmitted, or sent to any Vodafone server or any third party.
+              There is no network request involved in reading it.
             </li>
             <li>
               We read only the passport&rsquo;s standardized Machine Readable Zone (the printed strip
-              of text at the bottom of the document), the same field every airport e-gate reads —
-              never the printed photo or visual page.
+              of text at the bottom of the document), the same field every airport e-gate reads.
+              Never the printed photo or visual page.
             </li>
             <li>
               Only three values are ever extracted into the form: first name, last name, and document
@@ -64,12 +64,12 @@ export default function PrivacyPage() {
             </li>
             <li>
               The photo itself, and the full scanned text, are discarded the instant scanning
-              finishes — nothing is written to your device&rsquo;s storage or ours.
+              finishes. Nothing is written to your device&rsquo;s storage or ours.
             </li>
           </ul>
           <p>
             The resulting passport/ID number is then stored the same way it would be if you had typed
-            it — see &ldquo;Why We Store Your Passport Number&rdquo; below.
+            it. See &ldquo;Why We Store Your Passport Number&rdquo; below.
           </p>
         </section>
 
@@ -85,17 +85,17 @@ export default function PrivacyPage() {
         <section className="legal-section">
           <h2>4. Who We Share Data With</h2>
           <ul className="legal-list">
-            <li><strong>PayPal</strong> — processes your payment; we never see your card details.</li>
+            <li><strong>PayPal</strong>: processes your payment; we never see your card details.</li>
             <li>
-              <strong>PassKit</strong> — issues your Vodafone Tourist Pass to Apple Wallet/Google
+              <strong>PassKit</strong>: issues your Vodafone Tourist Pass to Apple Wallet/Google
               Wallet, if you choose to add one, using your name and Pack details.
             </li>
             <li>
-              <strong>Supabase</strong> — our database host, where your activation and order records
+              <strong>Supabase</strong>: our database host, where your activation and order records
               are stored.
             </li>
             <li>
-              <strong>Email delivery (Gmail/Google)</strong> — used to send your confirmation and
+              <strong>Email delivery (Gmail/Google)</strong>: used to send your confirmation and
               eSIM/pickup details.
             </li>
           </ul>
@@ -106,8 +106,8 @@ export default function PrivacyPage() {
           <h2>5. Cookies &amp; Local Storage</h2>
           <p>
             We don&rsquo;t use tracking or advertising cookies. Your form details are held briefly in
-            your browser&rsquo;s session storage — scoped to a single browser tab and automatically
-            cleared once the tab closes — purely to carry your details from the activation page to the
+            your browser&rsquo;s session storage, scoped to a single browser tab and automatically
+            cleared once the tab closes, purely to carry your details from the activation page to the
             payment page without putting them in a URL.
           </p>
         </section>

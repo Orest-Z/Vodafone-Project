@@ -7,7 +7,7 @@ import PageLoader from "@/shared/components/PageLoader";
 import { fetchSubscriptionStatus, SubscriptionStatus } from "@/features/my-pack/lib/api";
 
 function formatDate(iso: string | null): string {
-  if (!iso) return "—";
+  if (!iso) return "N/A";
   return new Date(iso).toLocaleDateString("en-GB", {
     day: "numeric",
     month: "long",

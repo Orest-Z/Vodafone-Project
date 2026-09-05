@@ -165,7 +165,7 @@ async function runMrzOcr(primary: OcrSource, fallback: OcrSource | null): Promis
 
   if (!firstName || !lastName || !passportNumber) {
     console.debug("[passportScan] MRZ lines found but didn't validate:", lines, parsed);
-    return { ok: false, error: "Scan didn't validate — please retake the photo or enter your details manually." };
+    return { ok: false, error: "Scan didn't validate. Please retake the photo or enter your details manually." };
   }
 
   return {
@@ -191,7 +191,7 @@ export async function scanPassport(file: File): Promise<PassportScanOutcome> {
     return await runMrzOcr(canvas, img);
   } catch (err) {
     console.debug("[passportScan] unexpected error:", err);
-    return { ok: false, error: "Something went wrong reading that photo — please try again or enter your details manually." };
+    return { ok: false, error: "Something went wrong reading that photo. Please try again or enter your details manually." };
   } finally {
     // Belt-and-braces cleanup: drop every reference to the image data so
     // nothing outlives this function call.
@@ -213,7 +213,7 @@ export async function scanPassportFromCapture(
     return await runMrzOcr(primary, fallback);
   } catch (err) {
     console.debug("[passportScan] unexpected error:", err);
-    return { ok: false, error: "Something went wrong reading that photo — please try again or enter your details manually." };
+    return { ok: false, error: "Something went wrong reading that photo. Please try again or enter your details manually." };
   } finally {
     releaseSource(primary);
     releaseSource(fallback);

@@ -30,7 +30,7 @@ export default function WalletUnavailableNotice({ platform, subscriptionId }: Wa
           <h2 className="activate-success-title">Your {label} pass isn&apos;t available right now</h2>
           <p className="step-text">
             This can happen occasionally when pass issuance fails on our end. Your tourist pack
-            itself is unaffected and already active — this only concerns the {label} shortcut.
+            itself is unaffected and already active. This only concerns the {label} shortcut.
           </p>
 
           <div className="form-alert-error" style={{ textAlign: "left" }}>

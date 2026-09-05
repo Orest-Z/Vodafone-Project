@@ -43,7 +43,7 @@ export default function RewardPassReveal({
               <p className="reward-lose-eyebrow">No Prize This Time</p>
               <h2 className="reward-lose-title">So close.</h2>
               <p className="reward-lose-sub">
-                Your pack is still fully active — head back to the hub for another game if you&apos;ve got credits left.
+                Your pack is still fully active. Head back to the hub for another game if you&apos;ve got credits left.
               </p>
               <button onClick={onClose} className="game-btn game-btn--dark" style={{ marginTop: 20 }}>
                 Back to Game Hub
@@ -76,7 +76,7 @@ export default function RewardPassReveal({
               <div className="reward-body">
                 <p className="reward-note">
                   This reward is redeemed straight from your Vodafone Tourist Pass in Apple
-                  Wallet — no code to show, no extra step. Just open your pass at checkout.
+                  Wallet. No code to show, no extra step. Just open your pass at checkout.
                 </p>
 
                 <a

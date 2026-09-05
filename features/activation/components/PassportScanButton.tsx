@@ -81,7 +81,7 @@ export default function PassportScanButton({ onScanned }: PassportScanButtonProp
 
       <p className="passport-scan-note">
         <Lock size={12} />
-        Processed on your device — your photo is never uploaded or stored.
+        Processed on your device. Your photo is never uploaded or stored.
       </p>
 
       {error && <p className="passport-scan-error">{error}</p>}

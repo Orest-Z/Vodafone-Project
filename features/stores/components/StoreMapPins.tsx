@@ -30,7 +30,7 @@ export default function StoreMapPins() {
             onClick={() => setActiveId(isActive ? null : store.id)}
           >
             <span className="store-pin-dot" aria-hidden="true" />
-            <span className="sr-only">{store.name} — 4G/5G coverage</span>
+            <span className="sr-only">{store.name}, 4G/5G coverage</span>
 
             {isActive && (
               <div className="store-pin-popup" onClick={(e) => e.stopPropagation()}>
