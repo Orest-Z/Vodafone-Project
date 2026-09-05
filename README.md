@@ -1,6 +1,6 @@
 # Vodafone Tourist Pack — Frontend
 
-![Preview](public/assets/banner.PNG)
+![Landing hero](public/assets/header.webp)
 
 Next.js app for the tourist eSIM/data pack flow: find or build a pack, activate it (optionally
 auto-filling your passport/ID via an on-device camera scan), pay through PayPal, add a Vodafone
@@ -8,6 +8,124 @@ Tourist Pass to Apple/Google Wallet, and land in a Game Hub where a daily scratc
 real discount on your next pack.
 
 Talks to a separate Spring Boot backend over REST. This repo doesn't run without it.
+
+---
+
+## See it in action
+
+<table>
+<tr>
+<td width="50%" valign="top">
+
+### 1 · Land, and know what to do next
+
+A four-step "How to Activate" strip sits right under the hero, so a tourist who's never heard of
+Vodafone knows exactly what happens before they tap anything.
+
+</td>
+<td width="50%">
+
+![How to Activate](public/assets/howToActivate.webp)
+
+</td>
+</tr>
+<tr>
+<td width="50%">
+
+![Pack Finder quiz](public/assets/packFinder.webp)
+
+</td>
+<td width="50%" valign="top">
+
+### 2 · Not sure what to buy? Answer three questions
+
+The Pack Finder (`features/marketing`) turns "beach, mountains, or city?" into a recommended pack —
+no data-plan literacy required.
+
+</td>
+</tr>
+<tr>
+<td width="50%" valign="top">
+
+### 3 · ...or just browse the fixed packs
+
+Three packs, straight from `GET /api/v1/packs`. Each `Buy & Activate` button drops straight into
+`/activate` with that pack pre-selected.
+
+</td>
+<td width="50%">
+
+![All available tourist packs](public/assets/packs.webp)
+
+</td>
+</tr>
+<tr>
+<td width="50%">
+
+![Create your own plan](public/assets/createPlan.webp)
+
+</td>
+<td width="50%" valign="top">
+
+### 4 · ...or build your own
+
+Data, minutes, and validity sliders — every drag re-prices live against the backend's
+`custom/quote` endpoint. Nothing is saved until "Build & Continue" turns it into a real pack via
+`custom/build`.
+
+</td>
+</tr>
+<tr>
+<td width="50%" valign="top">
+
+### 5 · One form, no app install
+
+Personal info on the left (with an optional on-device passport/ID scan — the photo never leaves
+the browser, see below), a live order summary on the right. Everything here is held in
+`sessionStorage` until PayPal capture succeeds.
+
+</td>
+<td width="50%">
+
+![Activate a pack](public/assets/activation.webp)
+
+</td>
+</tr>
+<tr>
+<td width="50%">
+
+![Scratch card reward](public/assets/scratchCard.webp)
+
+</td>
+<td width="50%" valign="top">
+
+### 6 · Pay, then scratch for a prize
+
+The moment PayPal capture and backend activation succeed, the tourist lands in the Game Hub. One
+scratch card per day, Europe/Tirane, enforced server-side — refreshing the tab doesn't get you a
+second try.
+
+</td>
+</tr>
+<tr>
+<td width="50%" valign="top">
+
+### 7 · A pass that lives in your Wallet, not another app
+
+`/my-pack?touristId=...` — reachable from the confirmation email and from the Daily Drop screen —
+adds a QR-coded Vodafone Tourist Pass to Apple/Google Wallet. Scan it at any of 7 partner
+businesses in Albania for an instant discount, no sign-up, no extra app.
+
+</td>
+<td width="50%">
+
+![Digital Tourist Pass in Apple/Google Wallet](public/assets/touristPass.webp)
+
+</td>
+</tr>
+</table>
+
+---
 
 ## Stack
 
@@ -75,56 +193,6 @@ needs a secure context (HTTPS, or exactly `localhost`) — it isn't available ov
    credit balance, daily claim, and the scratch card end to end
 5. `/my-pack?touristId=...` — pack details, key dates, and the "Add to Apple Wallet" button; also
    linked from the confirmation email and the Daily Drop reward screen
-
-## Walkthrough
-
-### 1. Landing page (`/`)
-
-The hero pitches the pack, then two ways into checkout: a short "Pack Finder" quiz (trip type →
-recommended pack) or the grid of fixed packs below it. A "How to Activate" strip explains the
-whole flow in four steps before the tourist commits to anything.
-
-![Landing hero](public/assets/header.webp)
-![How to Activate](public/assets/howToActivate.webp)
-
-**Pack Finder** (`features/marketing`) — three quick questions narrow the fixed-pack grid down to
-one recommendation:
-
-![Pack Finder quiz](public/assets/packFinder.webp)
-
-**Fixed packs** — the same three packs the backend serves from `GET /api/v1/packs`, each a
-`Buy & Activate` button away from `/activate`:
-
-![All available tourist packs](public/assets/packs.webp)
-
-**Custom plan builder** (`features/activation`, `custom/build` + `custom/quote` endpoints) — data,
-minutes, and validity sliders re-price live against the backend on every drag, no page reload:
-
-![Create your own plan](public/assets/createPlan.webp)
-
-### 2. Activation (`/activate`)
-
-Personal info on the left (with the optional on-device passport/ID scan — see below), a live
-summary of the chosen pack and its price on the right. Nothing here calls the backend yet; it all
-gets handed to `/payment` via `sessionStorage`.
-
-![Activate a pack](public/assets/activation.webp)
-
-### 3. Payment → Game Hub
-
-PayPal capture happens on `/payment`, then the tourist lands on `/game-hub`, where the Daily Drop
-scratch card is playable once per day (Europe/Tirane, enforced by the backend, not the client):
-
-![Scratch card reward](public/assets/scratchCard.webp)
-
-### 4. My Pack & the digital Tourist Pass
-
-`/my-pack?touristId=...` — linked from the confirmation email and from the Daily Drop screen — is
-where the tourist adds the Vodafone Tourist Pass to Apple/Google Wallet. The pass itself is a
-QR-coded ticket, generated server-side by PassKit, that unlocks discounts at partner businesses
-around Albania with no extra app or sign-up:
-
-![Digital Tourist Pass in Apple/Google Wallet](public/assets/touristPass.webp)
 
 The `touristId` is passed around as a plain query param, not stored in a cookie or session — it's
 an unguessable UUID, not a sequential ID, but a leaked link grants full access with no
